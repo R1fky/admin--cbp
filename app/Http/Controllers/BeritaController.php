@@ -43,20 +43,44 @@ class BeritaController extends Controller
         );
     }
 
-    # menambahkan data
+    # menambahkan data berita
+    public function create()
+    {
+        $kategoris = KategoriBerita::all();
+
+        return view(
+            'berita.create',
+            compact('kategoris')
+        );
+    }
+
+
     public function store(Request $request)
     {
-        $imagePath = null;
-
         $request->validate([
             'title' => 'required|string|max:255|unique:beritas,title',
+            'excerpt' => 'required|string|max:500',
             'content' => 'required',
             'kategori_id' => 'required|exists:kategori_beritas,id',
+            'author' => 'required|string|max:100',
+            'source' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'published_at' => 'nullable|date'
+            'published_at' => 'required|date'
+        ], [
+            'title.required' => 'Judul berita wajib diisi.',
+            'title.unique' => 'Judul berita sudah digunakan.',
+            'excerpt.required' => 'Ringkasan berita wajib diisi.',
+            'content.required' => 'Isi berita wajib diisi.',
+            'kategori_id.required' => 'Kategori wajib dipilih.',
+            'author.required' => 'Penulis wajib diisi.',
+            'published_at.required' => 'Tanggal publish wajib diisi.',
+            'image.image' => 'File harus berupa gambar.',
+            'image.mimes' => 'Format gambar harus JPG, JPEG atau PNG.',
+            'image.max' => 'Ukuran gambar maksimal 2 MB.'
         ]);
 
-        // Upload Image jika ada
+        $imagePath = null;
+
         if ($request->hasFile('image')) {
 
             $imagePath = $request
@@ -64,29 +88,62 @@ class BeritaController extends Controller
                 ->store('berita', 'public');
         }
 
-        $berita = Berita::create([
+        Berita::create([
             'title' => $request->title,
-            'kategori_id' => $request->kategori_id,
+            'excerpt' => $request->excerpt,
             'content' => $request->content,
+            'kategori_id' => $request->kategori_id,
+            'author' => $request->author,
+            'source' => $request->source,
             'image' => $imagePath,
-            'published_at' => $request->published_at,
+            'published_at' => $request->published_at
         ]);
 
         return redirect()
             ->route('berita.index')
-            ->with('success', 'Data berita berhasil ditambahkan.');
+            ->with('success', 'Berita berhasil ditambahkan');
     }
 
     // update Berita
+    public function edit(Berita $berita)
+    {
+        $kategoris = KategoriBerita::all();
+
+        return view(
+            'berita.edit',
+            compact(
+                'berita',
+                'kategoris'
+            )
+        );
+    }
+
     public function update(Request $request, Berita $berita)
     {
-        $request->validate([
-            'title' => 'required|string|max:255|unique:beritas,title,' . $berita->id,
-            'kategori_id' => 'required|exists:kategori_beritas,id',
-            'content' => 'required',
-            'published_at' => 'nullable|date',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
-        ]);
+        $request->validate(
+            [
+                'title' => 'required|string|max:255|unique:beritas,title,' . $berita->id,
+                'excerpt' => 'required|string|max:500',
+                'content' => 'required',
+                'kategori_id' => 'required|exists:kategori_beritas,id',
+                'author' => 'required|string|max:100',
+                'source' => 'nullable|string|max:255',
+                'published_at' => 'required|date',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            ],
+            [
+                'title.required' => 'Judul berita wajib diisi.',
+                'title.unique' => 'Judul berita sudah digunakan.',
+                'excerpt.required' => 'Ringkasan berita wajib diisi.',
+                'content.required' => 'Isi berita wajib diisi.',
+                'kategori_id.required' => 'Kategori wajib dipilih.',
+                'author.required' => 'Penulis wajib diisi.',
+                'published_at.required' => 'Tanggal publish wajib diisi.',
+                'image.image' => 'File harus berupa gambar.',
+                'image.mimes' => 'Format gambar harus JPG, JPEG atau PNG.',
+                'image.max' => 'Ukuran gambar maksimal 2 MB.'
+            ]
+        );
 
         $imagePath = $berita->image;
 
@@ -108,8 +165,11 @@ class BeritaController extends Controller
 
         $berita->update([
             'title' => $request->title,
-            'kategori_id' => $request->kategori_id,
+            'excerpt' => $request->excerpt,
             'content' => $request->content,
+            'kategori_id' => $request->kategori_id,
+            'author' => $request->author,
+            'source' => $request->source,
             'image' => $imagePath,
             'published_at' => $request->published_at,
         ]);

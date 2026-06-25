@@ -9,10 +9,17 @@ class Berita extends Model
     //
     protected $fillable = [
         'title',
+        'excerpt',
         'content',
         'kategori_id',
+        'author',
+        'source',
         'image',
         'published_at'
+    ];
+
+    protected $casts = [
+        'published_at' => 'datetime',
     ];
 
     public function kategori()

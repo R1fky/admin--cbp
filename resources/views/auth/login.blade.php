@@ -25,7 +25,7 @@
                 </h1>
 
                 <p class="font-subheading text-lg text-blue-100 text-center">
-                    Game Quiz Bank Indonesia
+                    Pengelolaan Media 
                 </p>
 
             </div>
@@ -40,7 +40,7 @@
                     </h2>
 
                     <p class="font-body text-gray-500 mb-8">
-                        Silakan masuk untuk mengelola sistem Game Quiz Bank Indonesia.
+                        Silakan masuk untuk mengelola sistem Media Game CBP Cinta Bangga Rupuiah.
                     </p>
 
                     @if ($errors->any())
