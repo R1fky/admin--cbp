@@ -52,13 +52,56 @@
                         Kelola seluruh data lomba dan kompetisi Bank Indonesia.
                     </p>
                 </div>
-                <button onclick="document.getElementById('createModal').classList.remove('hidden')"
+                <a href="{{ route('lomba.create') }}"
                     class="bg-[#1C3281] hover:bg-blue-900 text-white px-4 py-2 md:px-5 md:py-3 rounded-lg font-semibold transition">
                     + Tambah Lomba
-                </button>
-
+                </a>
             </div>
+        </div>
 
+        {{-- Search & Filter --}}
+        <div class="bg-white rounded-xl shadow-sm p-4">
+            <form method="GET" action="{{ route('lomba.index') }}">
+
+                <div class="flex flex-col md:flex-row gap-3">
+
+                    {{-- Search Judul --}}
+                    <div class="flex-1">
+                        <input type="text" name="search" value="{{ request('search') }}"
+                            placeholder="Cari judul lomba..."
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#1C3281] focus:outline-none">
+                    </div>
+
+                    {{-- Filter Kategori --}}
+                    <div class="md:w-60">
+                        <select name="kategori_id"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#1C3281] focus:outline-none">
+
+                            <option value="">
+                                Semua Kategori
+                            </option>
+
+                            @foreach ($kategoris as $kategori)
+                                <option value="{{ $kategori->id }}"
+                                    {{ request('kategori_id') == $kategori->id ? 'selected' : '' }}>
+                                    {{ $kategori->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    {{-- Tombol Cari --}}
+                    <button type="submit"
+                        class="bg-[#1C3281] hover:bg-blue-900 text-white px-6 py-3 rounded-lg font-semibold transition">
+                        Cari
+                    </button>
+                    {{-- Tombol Reset --}}
+                    <a href="{{ route('lomba.index') }}"
+                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold transition text-center">
+                        Reset
+                    </a>
+                </div>
+            </form>
         </div>
 
         {{-- Table --}}
@@ -71,6 +114,9 @@
                         </th>
                         <th class="px-6 py-4 text-left">
                             Judul
+                        </th>
+                        <th class="px-6 py-4 text-left">
+                            Kategori
                         </th>
                         <th class="px-6 py-4 text-left">
                             Tanggal Rilis
@@ -99,6 +145,11 @@
                                     {{ $lomba->title }}
                                 </h4>
                             </td>
+                            <td>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
+                                    {{ $lomba->kategori->name ?? '-' }}
+                                </span>
+                            </td>
                             <td class="px-6 py-4 text-gray-600">
                                 {{ $lomba->release_date ? \Carbon\Carbon::parse($lomba->release_date)->format('d M Y') : '-' }}
                             </td>
@@ -116,17 +167,10 @@
                             <td class="px-6 py-4">
                                 <div class="flex justify-center gap-2">
                                     {{-- edit lomba --}}
-                                    <button
-                                        onclick="openEditModal(
-                                            '{{ $lomba->id }}',
-                                            @js($lomba->title),
-                                            @js($lomba->description),
-                                            '{{ $lomba->release_date }}',
-                                            '{{ $lomba->status }}'
-                                        )"
+                                    <a href="{{ route('lomba.edit', $lomba->id) }}"
                                         class="bg-blue-100 text-blue-700 px-3 py-2 rounded-lg hover:bg-blue-200">
                                         Edit
-                                    </button>
+                                    </a>
                                     {{-- hapus lomba --}}
                                     <button
                                         onclick="openDeleteModal(
@@ -157,141 +201,6 @@
 
     </div>
 
-    {{-- Modal Tambah Lomba --}}
-    <div id="createModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-xl w-full max-w-md md:max-w-lg max-h-[90vh] overflow-y-auto p-5 shadow-xl">
-            <div class="flex justify-between items-center mb-5">
-                <h3 class="text-xl font-bold text-[#1C3281]">
-                    Tambah Lomba
-                </h3>
-                <button onclick="document.getElementById('createModal').classList.add('hidden')">
-                    ✕
-                </button>
-            </div>
-
-            <form action="{{ route('lomba.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="space-y-4">
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Judul Lomba
-                        </label>
-                        <input type="text" name="title"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#1C3281] focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Thumbnail
-                        </label>
-                        <input type="file" name="thumbnail" class="w-full border rounded-lg px-4 py-3">
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Tanggal Rilis
-                        </label>
-                        <input type="date" name="release_date" class="w-full border rounded-lg px-4 py-3">
-                    </div>
-
-                    <div>
-
-                        <label class="block mb-2 font-medium">
-                            Status
-                        </label>
-                        <select name="status"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#1C3281] focus:outline-none">
-
-                            <option value="sedang_berlangsung">
-                                Sedang Berlangsung
-                            </option>
-
-                            <option value="selesai">
-                                Selesai
-                            </option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Deskripsi
-                        </label>
-                        <textarea name="description" rows="4"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#1C3281] focus:outline-none"></textarea>
-                    </div>
-                    <button type="submit"
-                        class="w-full bg-[#CF1A25] hover:bg-red-700 text-white py-2.5 rounded-lg font-semibold transition">
-                        Simpan Lomba
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    {{-- Modal Edit --}}
-    <div id="editModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-xl w-full max-w-md md:max-w-lg max-h-[90vh] overflow-y-auto p-5 shadow-xl">
-            <div class="flex justify-between items-center mb-5">
-                <h3 class="text-xl font-bold text-[#1C3281]">
-                    Edit Lomba
-                </h3>
-                <button onclick="closeEditModal()">
-                    ✕
-                </button>
-            </div>
-            <form id="editForm" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="space-y-4">
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Judul Lomba
-                        </label>
-                        <input id="edit_title" type="text" name="title"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-2.5">
-                    </div>
-
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Thumbnail Baru
-                        </label>
-
-                        <input type="file" name="thumbnail" class="w-full border rounded-lg px-4 py-3">
-                    </div>
-
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Tanggal Rilis
-                        </label>
-
-                        <input id="edit_release_date" type="date" name="release_date"
-                            class="w-full border rounded-lg px-4 py-3">
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Status
-                        </label>
-                        <select id="edit_status" name="status" class="w-full border rounded-lg px-4 py-3">
-                            <option value="sedang_berlangsung">
-                                Sedang Berlangsung
-                            </option>
-                            <option value="selesai">
-                                Selesai
-                            </option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Deskripsi
-                        </label>
-                        <textarea id="edit_description" name="description" rows="4" class="w-full border rounded-lg px-4 py-3"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-[#1C3281] text-white py-3 rounded-lg">
-                        Update Lomba
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-    {{-- End Modal Edit --}}
-
     {{-- Modal Hapus --}}
     <div id="deleteModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
@@ -318,24 +227,6 @@
     </div>
     {{-- End Modal Hapus --}}
     <script>
-        // Edit
-        function openEditModal(id, title, description, releaseDate, status) {
-            document.getElementById('edit_title').value = title;
-            document.getElementById('edit_description').value = description;
-            document.getElementById('edit_release_date').value = releaseDate;
-            document.getElementById('edit_status').value = status;
-
-            document.getElementById('editForm').action =
-                `/lomba/${id}`;
-
-            document.getElementById('editModal')
-                .classList.remove('hidden');
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal')
-                .classList.add('hidden');
-        }
 
         // Delete
         function openDeleteModal(id, title) {

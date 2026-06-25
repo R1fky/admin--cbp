@@ -203,126 +203,6 @@
 
     </div>
 
-    {{-- Modal Edit --}}
-    <div id="editModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-
-        <div class="bg-white rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 shadow-xl">
-
-            <div class="flex justify-between items-center mb-5">
-
-                <h3 class="text-xl font-bold text-[#1C3281]">
-                    Edit Berita
-                </h3>
-
-                <button onclick="closeEditModal()">
-                    ✕
-                </button>
-
-            </div>
-
-            <form id="editForm" method="POST" enctype="multipart/form-data">
-
-                @csrf
-                @method('PUT')
-
-                <div class="space-y-4">
-
-                    {{-- Judul --}}
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Judul Berita
-                        </label>
-
-                        <input id="edit_title" type="text" name="title" class="w-full border rounded-lg px-4 py-3">
-                    </div>
-
-                    {{-- Kategori --}}
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Kategori
-                        </label>
-
-                        <select id="edit_kategori_id" name="kategori_id" class="w-full border rounded-lg px-4 py-3">
-
-                            @foreach ($kategoris as $kategori)
-                                <option value="{{ $kategori->id }}">
-                                    {{ $kategori->name }}
-                                </option>
-                            @endforeach
-
-                        </select>
-                    </div>
-
-                    {{-- Gambar --}}
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Ganti Gambar
-                        </label>
-
-                        <input type="file" name="image" class="w-full border rounded-lg px-4 py-3">
-                    </div>
-
-                    {{-- Excerpt --}}
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Ringkasan Berita
-                        </label>
-
-                        <textarea id="edit_excerpt" name="excerpt" rows="3" class="w-full border rounded-lg px-4 py-3"></textarea>
-                    </div>
-
-                    {{-- Author --}}
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Penulis
-                        </label>
-
-                        <input id="edit_author" type="text" name="author" class="w-full border rounded-lg px-4 py-3">
-                    </div>
-
-                    {{-- Source --}}
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Sumber
-                        </label>
-
-                        <input id="edit_source" type="text" name="source" class="w-full border rounded-lg px-4 py-3">
-                    </div>
-
-                    {{-- Publish --}}
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Published At
-                        </label>
-
-                        <input id="edit_published_at" type="date" name="published_at"
-                            class="w-full border rounded-lg px-4 py-3">
-                    </div>
-
-                    {{-- Content --}}
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Isi Berita
-                        </label>
-
-                        <textarea id="edit_content" name="content"></textarea>
-                    </div>
-
-                    <button type="submit" class="w-full bg-[#1C3281] text-white py-3 rounded-lg">
-
-                        Update Berita
-
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
-
-    </div>
-    {{-- End Modal Edit --}}
-
     {{-- Modal Detail --}}
     <div id="detailModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-2xl w-full max-w-4xl max-h-[95vh] overflow-y-auto shadow-2xl">
@@ -340,8 +220,7 @@
                 <img id="detail_image" class="w-full h-[350px] object-cover rounded-xl mb-6">
                 <!-- Kategori -->
                 <div class="mb-3">
-                    <span id="detail_kategori"
-                        class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+                    <span id="detail_kategori" class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
                     </span>
                 </div>
                 <!-- Judul -->
@@ -460,43 +339,6 @@
                 .classList.add('hidden');
         }
 
-        let editEditor;
-        // edit modal
-        function openEditModal(
-            id,
-            title,
-            excerpt,
-            content,
-            kategori_id,
-            author,
-            source,
-            published_at
-        ) {
-            document.getElementById('edit_title').value =
-                title;
-            document.getElementById('edit_excerpt').value =
-                excerpt;
-            document.getElementById('edit_author').value =
-                author;
-            document.getElementById('edit_source').value =
-                source ?? '';
-            document.getElementById('edit_kategori_id').value =
-                kategori_id;
-            document.getElementById('edit_published_at').value =
-                published_at;
-            editEditor.setData(content);
-            document.getElementById('editForm').action =
-                `/berita/${id}`;
-
-            document.getElementById('editModal')
-                .classList.remove('hidden');
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal')
-                .classList.add('hidden');
-        }
-
         // Delete
         function openDeleteModal(id, title) {
             document.getElementById('deleteTitle').innerText = title;
@@ -512,36 +354,5 @@
             document.getElementById('deleteModal')
                 .classList.add('hidden');
         }
-
-        document.addEventListener('DOMContentLoaded', function() {
-
-            const editor = document.querySelector('#contentEditor');
-
-            if (editor) {
-                ClassicEditor
-                    .create(editor)
-                    .catch(error => {
-                        console.error(error);
-                    });
-            }
-        });
-
-        // edit content
-        document.addEventListener('DOMContentLoaded', function() {
-
-            const textarea = document.querySelector('#edit_content');
-
-            if (textarea) {
-                ClassicEditor
-                    .create(textarea)
-                    .then(editor => {
-                        editEditor = editor;
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
-            }
-
-        });
     </script>
 @endsection
