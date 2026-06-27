@@ -53,7 +53,7 @@
     @endif
 
     {{-- Statistik --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6 mb-8">
         {{-- total lomba --}}
         <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-[#1C3281]">
             <div class="flex justify-between items-center">
@@ -70,6 +70,7 @@
                 </div>
             </div>
         </div>
+
         {{-- total berita --}}
         <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
             <div class="flex justify-between items-center">
@@ -87,8 +88,49 @@
             </div>
 
         </div>
+
+        {{-- akan di buka --}}
+        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-yellow-400">
+            <div class="flex justify-between items-center">
+
+                <div>
+                    <p class="text-gray-500">
+                        Akan Dibuka
+                    </p>
+
+                    <h2 class="text-4xl font-bold text-yellow-500 mt-2">
+                        {{ $lombaAkanDibuka }}
+                    </h2>
+                </div>
+
+                <div class="text-4xl">
+                    📅
+                </div>
+
+            </div>
+        </div>
+
         {{-- lomba berlangsung --}}
-        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-yellow-500">
+        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
+            <div class="flex justify-between items-center">
+
+                <div>
+                    <p class="text-gray-500">
+                        Sedang Berlangsung
+                    </p>
+
+                    <h2 class="text-4xl font-bold text-green-600 mt-2">
+                        {{ $lombaBerlangsung }}
+                    </h2>
+                </div>
+
+                <div class="text-4xl">
+                    🏆
+                </div>
+
+            </div>
+        </div>
+        {{-- <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-yellow-500">
             <div class="flex justify-between items-center">
                 <div>
                     <p class="text-gray-500">
@@ -103,9 +145,28 @@
                     ⏳
                 </div>
             </div>
-        </div>
+        </div> --}}
         {{-- lomba selesai --}}
         <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500">
+            <div class="flex justify-between items-center">
+
+                <div>
+                    <p class="text-gray-500">
+                        Pendaftaran Selesai
+                    </p>
+
+                    <h2 class="text-4xl font-bold text-red-500 mt-2">
+                        {{ $lombaSelesai }}
+                    </h2>
+                </div>
+
+                <div class="text-4xl">
+                    🔒
+                </div>
+
+            </div>
+        </div>
+        {{-- <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500">
             <div class="flex justify-between items-center">
                 <div>
                     <p class="text-gray-500">
@@ -120,8 +181,7 @@
                     ✅
                 </div>
             </div>
-
-        </div>
+        </div> --}}
 
     </div>
 
@@ -165,15 +225,27 @@
             </h3>
 
             @forelse($lombaTerbaru as $lomba)
-                <div class="border-b py-3">
+                <div class="border-b py-4">
 
-                    <p class="font-semibold">
-                        {{ $lomba->title }}
-                    </p>
+                    <div class="flex justify-between items-center">
 
-                    <p class="text-sm text-gray-500">
-                        {{ $lomba->created_at->format('d M Y') }}
-                    </p>
+                        <div>
+
+                            <p class="font-semibold">
+                                {{ $lomba->title }}
+                            </p>
+
+                            <p class="text-sm text-gray-500">
+                                {{ $lomba->release_date->format('d M Y') }}
+                            </p>
+
+                        </div>
+
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold {{ $lomba->status_color }}">
+                            {{ $lomba->status_label }}
+                        </span>
+
+                    </div>
 
                 </div>
 

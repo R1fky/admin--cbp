@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Lomba;
 use App\Models\Berita;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -11,6 +12,8 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $search = $request->search;
+
+        $today = Carbon::today();
 
         $beritaTerbaru = Berita::query()
             ->when($search, function ($query) use ($search) {
@@ -29,21 +32,28 @@ class DashboardController extends Controller
             ->get();
 
         return view('dashboard.index', [
+
             'totalLomba' => Lomba::count(),
+
             'totalBerita' => Berita::count(),
 
-            'lombaBerlangsung' => Lomba::where(
-                'status',
-                'sedang_berlangsung'
-            )->count(),
+            // Akan Dibuka
+            'lombaAkanDibuka' => Lomba::whereDate('release_date', '>', $today)
+                ->count(),
 
-            'lombaSelesai' => Lomba::where(
-                'status',
-                'selesai'
-            )->count(),
+            // Sedang Berlangsung
+            'lombaBerlangsung' => Lomba::whereDate('release_date', '<=', $today)
+                ->whereDate('end_date', '>=', $today)
+                ->count(),
+
+            // Selesai
+            'lombaSelesai' => Lomba::whereDate('end_date', '<', $today)
+                ->count(),
 
             'beritaTerbaru' => $beritaTerbaru,
+
             'lombaTerbaru' => $lombaTerbaru,
+
             'search' => $search
         ]);
     }

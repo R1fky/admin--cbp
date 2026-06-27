@@ -61,19 +61,35 @@ class LombaController extends Controller
                 'kategori_id' => 'required|exists:kategori_lombas,id',
                 'description' => 'required',
                 'release_date' => 'required|date',
-                'status' => 'required|in:sedang_berlangsung,selesai',
+                'end_date' => 'required|date|after_or_equal:release_date',
+                'location_type' => 'required|in:online,offline',
+                'location' => 'required|string|max:255',
                 'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
             ],
             [
-                'title.required' => 'Judul Lomba Wajib diisi.',
-                'title.unique' => 'Judul Lomba Sudah digunakan.',
-                'description.required' => 'Isi Deskripsi wajib diisi.',
+                'title.required' => 'Judul lomba wajib diisi.',
+                'title.unique' => 'Judul lomba sudah digunakan.',
+
                 'kategori_id.required' => 'Kategori wajib dipilih.',
-                'release_date.required' => 'Tanggal Release wajib diisi.',
-                'status.required' => 'Status harus dipilih',
+                'kategori_id.exists' => 'Kategori tidak ditemukan.',
+
+                'description.required' => 'Deskripsi wajib diisi.',
+
+                'release_date.required' => 'Tanggal mulai wajib diisi.',
+                'release_date.date' => 'Format tanggal mulai tidak valid.',
+
+                'end_date.required' => 'Tanggal berakhir wajib diisi.',
+                'end_date.date' => 'Format tanggal berakhir tidak valid.',
+                'end_date.after_or_equal' => 'Tanggal berakhir tidak boleh lebih awal dari tanggal mulai.',
+
+                'location_type.required' => 'Tipe lokasi wajib dipilih.',
+                'location_type.in' => 'Tipe lokasi tidak valid.',
+
+                'location.required' => 'Lokasi wajib diisi.',
+
                 'thumbnail.image' => 'File harus berupa gambar.',
                 'thumbnail.mimes' => 'Format gambar harus JPG, JPEG atau PNG.',
-                'thumbnail.max' => 'Ukuran gambar maksimal 2 MB.'
+                'thumbnail.max' => 'Ukuran gambar maksimal 2 MB.',
             ]
         );
 
@@ -91,7 +107,9 @@ class LombaController extends Controller
             'description' => $request->description,
             'thumbnail' => $thumbnailPath,
             'release_date' => $request->release_date,
-            'status' => $request->status
+            'end_date' => $request->end_date,
+            'location_type' => $request->location_type,
+            'location' => $request->location
         ]);
 
         return redirect()
@@ -121,19 +139,35 @@ class LombaController extends Controller
                 'description' => 'required',
                 'kategori_id' => 'required|exists:kategori_lombas,id',
                 'release_date' => 'required|date',
+                'end_date' => 'required|date|after_or_equal:release_date',
+                'location_type' => 'required|in:online,offline',
+                'location' => 'required|string|max:255',
                 'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-                'status' => 'required|in:sedang_berlangsung,selesai',
             ],
             [
-                'title.required' => 'Judul Lomba Wajib diisi.',
-                'title.unique' => 'Judul Lomba Sudah digunakan.',
-                'description.required' => 'Isi Deskripsi wajib diisi.',
+                'title.required' => 'Judul lomba wajib diisi.',
+                'title.unique' => 'Judul lomba sudah digunakan.',
+
                 'kategori_id.required' => 'Kategori wajib dipilih.',
-                'release_date.required' => 'Tanggal Release wajib diisi.',
-                'status.required' => 'Status harus dipilih',
+                'kategori_id.exists' => 'Kategori tidak ditemukan.',
+
+                'description.required' => 'Deskripsi wajib diisi.',
+
+                'release_date.required' => 'Tanggal mulai wajib diisi.',
+                'release_date.date' => 'Format tanggal mulai tidak valid.',
+
+                'end_date.required' => 'Tanggal berakhir wajib diisi.',
+                'end_date.date' => 'Format tanggal berakhir tidak valid.',
+                'end_date.after_or_equal' => 'Tanggal berakhir tidak boleh lebih awal dari tanggal mulai.',
+
+                'location_type.required' => 'Tipe lokasi wajib dipilih.',
+                'location_type.in' => 'Tipe lokasi tidak valid.',
+
+                'location.required' => 'Lokasi wajib diisi.',
+
                 'thumbnail.image' => 'File harus berupa gambar.',
                 'thumbnail.mimes' => 'Format gambar harus JPG, JPEG atau PNG.',
-                'thumbnail.max' => 'Ukuran gambar maksimal 2 MB.'
+                'thumbnail.max' => 'Ukuran gambar maksimal 2 MB.',
             ]
         );
 
@@ -161,7 +195,9 @@ class LombaController extends Controller
             'description' => $request->description,
             'thumbnail' => $thumbnailPath,
             'release_date' => $request->release_date,
-            'status' => $request->status
+            'end_date' => $request->end_date,
+            'location_type' => $request->location_type,
+            'location' => $request->location,
         ]);
 
         return redirect()

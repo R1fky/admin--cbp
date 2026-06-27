@@ -65,30 +65,46 @@
                     @enderror
                 </div>
 
-                {{-- Status --}}
+                {{-- Location Type --}}
                 <div>
 
                     <label class="block mb-2 font-medium">
-                        Status
+                        Location Type
                     </label>
 
-                    <select name="status"
-                        class="w-full border rounded-lg px-4 py-3 @error('status') border-red-500 @enderror">
+                    <select name="location_type"
+                        class="w-full border rounded-lg px-4 py-3 @error('location_type') border-red-500 @enderror">
 
-                        <option value="sedang_berlangsung">
-                            Sedang Berlangsung
+                        <option value="online">
+                            Online
                         </option>
 
-                        <option value="selesai">
-                            Selesai
+                        <option value="offline">
+                            Offline
                         </option>
                     </select>
 
-                    @error('kategori_id')
+                    @error('location_type')
                         <p class="text-red-500 text-sm mt-1">
                             {{ $message }}
                         </p>
                     @enderror
+                </div>
+
+                {{-- Location --}}
+                <div>
+                    <label class="block mb-2 font-medium">
+                        Location
+                    </label>
+
+                    <input type="text" name="location" class="w-full border rounded-lg px-4 py-3 @error('location') border-red-500 @enderror">
+
+                    @error('location')
+                        <p class="text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
+
                 </div>
 
                 {{-- Release Date --}}
@@ -105,7 +121,22 @@
                             {{ $message }}
                         </p>
                     @enderror
+                </div>
 
+                {{-- End Date --}}
+                <div>
+                    <label class="block mb-2 font-medium">
+                        End Date
+                    </label>
+
+                    <input type="date" name="end_date" value="{{ old('end_date') }}"
+                        class="w-full border rounded-lg px-4 py-3 @error('end_date') border-red-500 @enderror">
+
+                    @error('end_date')
+                        <p class="text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
                 {{-- Thumb Nail --}}

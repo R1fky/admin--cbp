@@ -121,8 +121,8 @@
                         <th class="px-6 py-4 text-left">
                             Tanggal Rilis
                         </th>
-                        <th class="px-6 py-4 text-center">
-                            Status
+                        <th class="px-6 py-4 text-left">
+                            Tanggal Berakhir
                         </th>
                         <th class="px-6 py-4 text-center">
                             Aksi
@@ -153,19 +153,25 @@
                             <td class="px-6 py-4 text-gray-600">
                                 {{ $lomba->release_date ? \Carbon\Carbon::parse($lomba->release_date)->format('d M Y') : '-' }}
                             </td>
-                            <td class="px-6 py-4 text-center">
-                                @if ($lomba->status == 'sedang_berlangsung')
-                                    <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">
-                                        Sedang Berlangsung
-                                    </span>
-                                @else
-                                    <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-sm">
-                                        Selesai
-                                    </span>
-                                @endif
+                            <td class="px-6 py-4 text-gray-600">
+                                {{ $lomba->end_date ? \Carbon\Carbon::parse($lomba->end_date)->format('d M Y') : '-' }}
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex justify-center gap-2">
+                                    <button
+                                        onclick="openDetailModal(
+                                            @js($lomba->title),
+                                            @js($lomba->kategori?->name),
+                                            @js($lomba->description),
+                                            @js($lomba->location_type),
+                                            @js($lomba->location),
+                                            '{{ $lomba->thumbnail ? asset('storage/' . $lomba->thumbnail) : '' }}',
+                                            '{{ $lomba->release_date ? $lomba->release_date->format('d M Y') : '-' }}',
+                                            '{{ $lomba->end_date ? $lomba->end_date->format('d M Y') : '-' }}'
+                                        )"
+                                        class="bg-green-100 text-green-700 px-3 py-2 rounded-lg hover:bg-green-200">
+                                        Detail
+                                    </button>
                                     {{-- edit lomba --}}
                                     <a href="{{ route('lomba.edit', $lomba->id) }}"
                                         class="bg-blue-100 text-blue-700 px-3 py-2 rounded-lg hover:bg-blue-200">
@@ -201,6 +207,104 @@
 
     </div>
 
+    {{-- Modal Detail Lomba --}}
+    <div id="detailModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+
+        <div class="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl">
+
+            {{-- Header --}}
+            <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center rounded-t-2xl">
+
+                <h3 class="text-2xl font-bold text-[#1C3281]">
+                    Detail Lomba
+                </h3>
+
+                <button onclick="closeDetailModal()" class="text-2xl text-gray-500 hover:text-red-500">
+                    ✕
+                </button>
+
+            </div>
+
+            <div class="p-6">
+
+                {{-- Thumbnail --}}
+                <img id="detail_image" class="w-full h-72 object-cover rounded-xl border mb-6">
+
+                {{-- Judul --}}
+                <h2 id="detail_title" class="text-3xl font-bold text-[#1C3281] mb-4">
+                </h2>
+
+                {{-- Kategori --}}
+                <div class="mb-5">
+                    <span id="detail_kategori"
+                        class="inline-block bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold">
+                    </span>
+
+                    <span class="px-3 py-1 rounded-full text-sm font-semibold {{ $lomba->status_color }}">
+                        {{ $lomba->status_label }}
+                    </span>
+                </div>
+
+                {{-- Informasi --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
+                    <div class="bg-slate-50 rounded-xl p-4 border">
+                        <p class="text-sm text-gray-500">
+                            📅 Tanggal Mulai
+                        </p>
+
+                        <p id="detail_release" class="font-semibold">
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 rounded-xl p-4 border">
+                        <p class="text-sm text-gray-500">
+                            🏁 Tanggal Berakhir
+                        </p>
+
+                        <p id="detail_end" class="font-semibold">
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 rounded-xl p-4 border">
+                        <p class="text-sm text-gray-500">
+                            🌐 Tipe Lomba
+                        </p>
+
+                        <p id="detail_location_type" class="font-semibold capitalize">
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 rounded-xl p-4 border">
+                        <p class="text-sm text-gray-500">
+                            📍 Lokasi
+                        </p>
+
+                        <p id="detail_location" class="font-semibold">
+                        </p>
+                    </div>
+
+                </div>
+
+                {{-- Deskripsi --}}
+                <div>
+
+                    <h4 class="text-xl font-semibold text-[#1C3281] mb-3">
+                        Deskripsi Lomba
+                    </h4>
+
+                    <div id="detail_description" class="border rounded-xl p-5 leading-8 bg-gray-50 whitespace-pre-line">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    {{-- End Modal Detail --}}
+
     {{-- Modal Hapus --}}
     <div id="deleteModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
@@ -227,6 +331,55 @@
     </div>
     {{-- End Modal Hapus --}}
     <script>
+        // detail Modal
+        function openDetailModal(
+            title,
+            kategori,
+            description,
+            locationType,
+            location,
+            image,
+            releaseDate,
+            endDate
+        ) {
+
+            document.getElementById('detail_title').innerText = title;
+
+            document.getElementById('detail_kategori').innerText =
+                kategori ?? '-';
+
+            document.getElementById('detail_description').innerText =
+                description ?? '-';
+
+            document.getElementById('detail_location_type').innerText =
+                locationType ?? '-';
+
+            document.getElementById('detail_location').innerText =
+                location ?? '-';
+
+            document.getElementById('detail_release').innerText =
+                releaseDate ?? '-';
+
+            document.getElementById('detail_end').innerText =
+                endDate ?? '-';
+
+            const img = document.getElementById('detail_image');
+
+            if (image) {
+                img.src = image;
+                img.classList.remove('hidden');
+            } else {
+                img.classList.add('hidden');
+            }
+
+            document.getElementById('detailModal')
+                .classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal')
+                .classList.add('hidden');
+        }
 
         // Delete
         function openDeleteModal(id, title) {

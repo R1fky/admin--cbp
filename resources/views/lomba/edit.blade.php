@@ -64,14 +64,31 @@
                     <input type="date" name="release_date"
                         value="{{ old('release_date', optional($lomba->release_date)->format('Y-m-d')) }}"
                         class="w-full border rounded-lg px-4 py-3
-        @error('release_date') border-red-500 @enderror">
+                        @error('release_date') border-red-500 @enderror">
 
                     @error('release_date')
                         <p class="text-red-500 text-sm mt-1">
                             {{ $message }}
                         </p>
                     @enderror
+                </div>
 
+                {{-- End Date --}}
+                <div>
+                    <label class="block mb-2 font-medium">
+                        End Date
+                    </label>
+
+                    <input type="date" name="end_date"
+                        value="{{ old('end_date', optional($lomba->end_date)->format('Y-m-d')) }}"
+                        class="w-full border rounded-lg px-4 py-3
+                        @error('end_date') border-red-500 @enderror">
+
+                    @error('end_date')
+                        <p class="text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
                 {{-- Thumbnail Saat Ini --}}
@@ -90,34 +107,7 @@
                     @endif
                 </div>
 
-                {{-- Status --}}
-                <div>
-                    <label class="block mb-2 font-medium">
-                        Status Lomba
-                    </label>
-
-                    <select name="status"
-                        class="w-full border rounded-lg px-4 py-3
-                        @error('status') border-red-500 @enderror">
-
-                        <option value="sedang_berlangsung"
-                            {{ old('status', $lomba->status) == 'sedang_berlangsung' ? 'selected' : '' }}>
-                            Sedang Berlangsung
-                        </option>
-
-                        <option value="selesai" {{ old('status', $lomba->status) == 'selesai' ? 'selected' : '' }}>
-                            Selesai
-                        </option>
-
-                    </select>
-
-                    @error('status')
-                        <p class="text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
-
+                {{-- Ganti Thumbnail --}}
                 <div class="md:col-span-2">
 
                     <label class="block mb-2 font-medium">
@@ -129,6 +119,52 @@
                     @error('thumbnail') border-red-500 @enderror">
 
                     @error('thumbnail')
+                        <p class="text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+
+                {{-- location_type --}}
+                <div>
+                    <label class="block mb-2 font-medium">
+                        Tipe Lokasi Lomba
+                    </label>
+
+                    <select name="location_type"
+                        class="w-full border rounded-lg px-4 py-3
+                        @error('location_type') border-red-500 @enderror">
+
+                        <option value="online"
+                            {{ old('location_type', $lomba->location_type) == 'online' ? 'selected' : '' }}>
+                            online
+                        </option>
+
+                        <option value="offline"
+                            {{ old('location_type', $lomba->location_type) == 'offline' ? 'selected' : '' }}>
+                            offline
+                        </option>
+
+                    </select>
+
+                    @error('location_type')
+                        <p class="text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+
+                {{-- Location  --}}
+                <div>
+
+                    <label class="block mb-2 font-medium">
+                        Lokasi Lomba
+                    </label>
+
+                    <input type="text" name="location" value="{{ old('location', $lomba->location) }}"
+                        class="w-full border rounded-lg px-4 py-3 @error('location') border-red-500 @enderror">
+
+                    @error('location')
                         <p class="text-red-500 text-sm mt-1">
                             {{ $message }}
                         </p>
