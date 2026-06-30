@@ -53,6 +53,11 @@
                     Kelola Berita
                 </a>
 
+                <a href="{{ route('registration.lomba') }}"
+                    class="block px-4 py-3 rounded-lg hover:bg-blue-800 transition">
+                    Pendaftaran Lomba
+                </a>
+
             </nav>
 
             <!-- Logout -->
@@ -148,6 +153,13 @@
 
                 📰
                 <span>Berita</span>
+
+            </a>
+
+            <a href="{{ route('registration.lomba') }}" class="flex flex-col items-center justify-center text-sm">
+
+                📋
+                <span>Pendaftaran Lomba</span>
 
             </a>
 

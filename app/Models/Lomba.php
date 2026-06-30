@@ -30,7 +30,7 @@ class Lomba extends Model
         return $this->belongsTo(KategoriLomba::class);
     }
 
-    
+
     /**
      * Status lomba
      */
@@ -71,5 +71,10 @@ class Lomba extends Model
             'sedang_berlangsung' => 'bg-green-100 text-green-700',
             default => 'bg-red-100 text-red-700',
         };
+    }
+
+    public function registrations()
+    {
+        return $this->hasMany(LombaRegistration::class);
     }
 }

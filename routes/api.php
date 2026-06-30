@@ -1,25 +1,28 @@
 <?php
 
-// use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\LombasController;
-use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BeritasController;
+use App\Http\Controllers\Api\LombaRegistrationsController;
 
 Route::prefix('v1')
     ->name('api.')
     ->group(function () {
-        Route::post('/login', [AuthController::class, 'login']);
 
-        Route::middleware('auth:sanctum')->group(function () {
+        Route::apiResource('lombas', LombasController::class)
+            ->only([
+                'index',
+                'show'
+            ]);
 
-            Route::post('/logout', [AuthController::class, 'logout']);
+        Route::apiResource('beritas', BeritasController::class)
+            ->only([
+                'index',
+                'show'
+            ]);
 
-            Route::apiResource('lomba', LombasController::class);
-        });
+        Route::post(
+            'lomba-registrations',
+            [LombaRegistrationsController::class, 'store']
+        );
     });
-
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
-
-// Route::apiResource('lomba', LombasController::class);

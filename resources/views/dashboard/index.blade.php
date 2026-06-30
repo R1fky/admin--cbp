@@ -130,22 +130,6 @@
 
             </div>
         </div>
-        {{-- <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-yellow-500">
-            <div class="flex justify-between items-center">
-                <div>
-                    <p class="text-gray-500">
-                        Lomba Berlangsung
-                    </p>
-
-                    <h2 class="text-4xl font-bold text-yellow-500 mt-2">
-                        {{ $lombaBerlangsung }}
-                    </h2>
-                </div>
-                <div class="text-4xl">
-                    ⏳
-                </div>
-            </div>
-        </div> --}}
         {{-- lomba selesai --}}
         <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500">
             <div class="flex justify-between items-center">
@@ -166,27 +150,10 @@
 
             </div>
         </div>
-        {{-- <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500">
-            <div class="flex justify-between items-center">
-                <div>
-                    <p class="text-gray-500">
-                        Lomba Selesai
-                    </p>
-
-                    <h2 class="text-4xl font-bold text-red-500 mt-2">
-                        {{ $lombaSelesai }}
-                    </h2>
-                </div>
-                <div class="text-4xl">
-                    ✅
-                </div>
-            </div>
-        </div> --}}
-
     </div>
 
     {{-- Aktivitas --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
         {{-- Berita --}}
         <div class="bg-white rounded-xl shadow-sm p-6">
@@ -250,7 +217,6 @@
                 </div>
 
             @empty
-
                 <p class="text-gray-500">
                     Belum ada lomba
                 </p>
@@ -258,6 +224,65 @@
 
         </div>
 
-    </div>
+        <div class="bg-white rounded-xl shadow-sm p-6">
 
+            <h3 class="font-bold text-xl mb-4 text-[#1C3281]">
+                Aktivitas Pendaftaran
+            </h3>
+
+            @forelse($pendaftaranTerbaru as $item)
+                <div class="border-b py-4">
+
+                    <div class="flex justify-between">
+
+                        <div>
+
+                            <p class="font-semibold">
+
+                                {{ $item->name }}
+
+                            </p>
+
+                            <p class="text-sm text-gray-500">
+
+                                {{ $item->lomba->title }}
+
+                            </p>
+
+                            <p class="text-xs text-gray-400 mt-1">
+
+                                {{ $item->created_at->diffForHumans() }}
+
+                            </p>
+
+                        </div>
+
+                        @if ($item->status == 'approved')
+                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+
+                                Approved
+
+                            </span>
+                        @elseif($item->status == 'pending')
+                            <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-semibold">
+
+                                Pending
+
+                            </span>
+                        @else
+                            <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
+
+                                Rejected
+
+                            </span>
+                        @endif
+                    </div>
+                </div>
+            @empty
+                <p class="text-gray-500">
+                    Belum ada peserta mendaftar.
+                </p>
+            @endforelse
+        </div>
+    </div>
 @endsection

@@ -6,6 +6,7 @@ use App\Models\Lomba;
 use App\Models\Berita;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\LombaRegistration;
 
 class DashboardController extends Controller
 {
@@ -31,22 +32,23 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        $pendaftaranTerbaru = LombaRegistration::with('lomba')
+            ->latest()
+            ->take(8)
+            ->get();
+
         return view('dashboard.index', [
 
             'totalLomba' => Lomba::count(),
 
             'totalBerita' => Berita::count(),
 
-            // Akan Dibuka
-            'lombaAkanDibuka' => Lomba::whereDate('release_date', '>', $today)
-                ->count(),
+            'lombaAkanDibuka' => Lomba::whereDate('release_date', '>', $today)->count(),
 
-            // Sedang Berlangsung
             'lombaBerlangsung' => Lomba::whereDate('release_date', '<=', $today)
                 ->whereDate('end_date', '>=', $today)
                 ->count(),
 
-            // Selesai
             'lombaSelesai' => Lomba::whereDate('end_date', '<', $today)
                 ->count(),
 
@@ -54,7 +56,10 @@ class DashboardController extends Controller
 
             'lombaTerbaru' => $lombaTerbaru,
 
+            'pendaftaranTerbaru' => $pendaftaranTerbaru,
+
             'search' => $search
+
         ]);
     }
 }
