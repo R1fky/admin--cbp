@@ -27,6 +27,12 @@ class Lomba extends Model
         'end_date' => 'date',
     ];
 
+    // protected $appends = [
+    //     'status',
+    //     'status_label',
+    //     'status_color',
+    // ];
+
     public function kategori()
     {
         return $this->belongsTo(KategoriLomba::class);
