@@ -166,8 +166,10 @@
                                             @js($lomba->location_type),
                                             @js($lomba->location),
                                             '{{ $lomba->thumbnail ? asset('storage/' . $lomba->thumbnail) : '' }}',
-                                            '{{ $lomba->release_date ? $lomba->release_date->format('d M Y') : '-' }}',
-                                            '{{ $lomba->end_date ? $lomba->end_date->format('d M Y') : '-' }}'
+                                            '{{ $lomba->release_date?->format('d M Y') }}',
+                                            '{{ $lomba->end_date?->format('d M Y') }}',
+                                            @js($lomba->status_label),
+                                            @js($lomba->status_color)
                                         )"
                                         class="bg-green-100 text-green-700 px-3 py-2 rounded-lg hover:bg-green-200">
                                         Detail
@@ -240,8 +242,10 @@
                         class="inline-block bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold">
                     </span>
 
-                    <span class="px-3 py-1 rounded-full text-sm font-semibold {{ $lomba->status_color }}">
+                    {{-- <span class="px-3 py-1 rounded-full text-sm font-semibold {{ $lomba->status_color }}">
                         {{ $lomba->status_label }}
+                    </span> --}}
+                    <span id="detail_status" class="px-3 py-1 rounded-full text-sm font-semibold">
                     </span>
                 </div>
 
@@ -340,8 +344,15 @@
             location,
             image,
             releaseDate,
-            endDate
+            endDate,
+            statusLabel,
+            statusColor
         ) {
+            const status = document.getElementById('detail_status');
+
+            status.innerText = statusLabel;
+            status.className =
+                `px-3 py-1 rounded-full text-sm font-semibold ${statusColor}`;
 
             document.getElementById('detail_title').innerText = title;
 

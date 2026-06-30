@@ -43,13 +43,13 @@
 
                         </div>
 
-                        @if ($lomba->status == 'sedang_berlangsung')
+                        @if ($lomba->status == 'ongoing')
                             <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">
-                                Berlangsung
+                                Sedang Berlangsung
                             </span>
-                        @elseif($lomba->status == 'akan_dibuka')
+                        @elseif($lomba->status == 'upcoming')
                             <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm">
-                                Akan Dibuka
+                                Segera Dibuka
                             </span>
                         @else
                             <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-sm">

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 
+use App\Models\KategoriLomba;
+use App\Models\LombaRegistration;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,37 +41,37 @@ class Lomba extends Model
         $today = Carbon::today();
 
         if ($today->lt($this->release_date)) {
-            return 'akan_dibuka';
+            return 'upcoming';
         }
 
         if ($today->lte($this->end_date)) {
-            return 'sedang_berlangsung';
+            return 'ongoing';
         }
 
-        return 'pendaftaran_selesai';
+        return 'closed';
     }
 
     /**
-     * Label status
+     * Label Status
      */
     public function getStatusLabelAttribute()
     {
         return match ($this->status) {
-            'akan_dibuka' => 'Akan Dibuka',
-            'sedang_berlangsung' => 'Sedang Berlangsung',
-            default => 'Pendaftaran Selesai',
+            'upcoming' => 'Segera Dibuka',
+            'ongoing'  => 'Sedang Berlangsung',
+            default    => 'Ditutup',
         };
     }
 
     /**
-     * Warna badge
+     * Warna Badge
      */
     public function getStatusColorAttribute()
     {
         return match ($this->status) {
-            'akan_dibuka' => 'bg-yellow-100 text-yellow-700',
-            'sedang_berlangsung' => 'bg-green-100 text-green-700',
-            default => 'bg-red-100 text-red-700',
+            'upcoming' => 'bg-yellow-100 text-yellow-700',
+            'ongoing'  => 'bg-green-100 text-green-700',
+            default    => 'bg-red-100 text-red-700',
         };
     }
 
