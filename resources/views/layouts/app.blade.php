@@ -72,25 +72,71 @@
         </aside>
 
         <!-- Header Mobile -->
-        <div class="md:hidden sticky top-0 z-50 bg-blue-900 text-white p-4 shadow-lg">
-            <div class="flex items-center justify-between">
+        <header class="md:hidden sticky top-0 z-50 bg-blue-900 text-white">
+            <div class="flex items-center justify-between p-4">
+                <button id="openSidebar" class="text-3xl font-bold">
+                    ☰
+                </button>
+                <div class="flex items-center gap-3">
+                    <img src="{{ asset('images/BIlogo.png') }}" class="w-12 h-12 object-contain" alt="Logo">
+                    <div>
+                        <h1 class="font-bold leading-tight">
+                            Kelola Media CBP
+                        </h1>
+                        <p class="text-xs text-blue-200">
+                            Admin Panel
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </header>
 
-                <!-- Logo -->
-                <img src="{{ asset('images/BIlogo.png') }}" class="w-16 h-16 object-contain" alt="Logo BI">
+        <!-- Overlay -->
+        <div id="sidebarOverlay" class="fixed inset-0 bg-black/40 hidden z-40">
+        </div>
 
-                <!-- Teks -->
-                <div class="text-right">
-                    <h1 class="font-bold text-lg leading-tight">
-                        Kelola Media CBP
-                    </h1>
-
-                    <p class="text-sm text-blue-200">
+        <!-- Sidebar Mobile -->
+        <aside id="mobileSidebar"
+            class="fixed top-0 left-0 h-full w-72 bg-blue-900 text-white transform -translate-x-full transition-transform duration-300 z-50">
+            <!-- Header -->
+            <div class="p-6 border-b border-blue-800 flex items-center justify-between">
+                <div>
+                    <h2 class="font-bold text-lg">
                         Admin Panel
+                    </h2>
+                    <p class="text-blue-200 text-sm">
+                        Kelola Media CBP
                     </p>
                 </div>
-
+                <button id="closeSidebar" class="text-3xl">
+                    ×
+                </button>
             </div>
-        </div>
+            <!-- Menu -->
+            <nav class="p-4 space-y-2">
+                <a href="{{ route('dashboard') }}" class="block rounded-lg px-4 py-3 hover:bg-blue-800">
+                    📊 Dashboard
+                </a>
+                <a href="{{ route('lomba.index') }}" class="block rounded-lg px-4 py-3 hover:bg-blue-800">
+                    🏆 Kelola Lomba
+                </a>
+                <a href="{{ route('berita.index') }}" class="block rounded-lg px-4 py-3 hover:bg-blue-800">
+                    📰 Kelola Berita
+                </a>
+                <a href="{{ route('registration.lomba') }}" class="block rounded-lg px-4 py-3 hover:bg-blue-800">
+                    📋 Pendaftaran
+                </a>
+            </nav>
+            <!-- Logout -->
+            <div class="absolute bottom-0 w-full p-4 border-t border-blue-800">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button class="w-full rounded-lg bg-red-500 py-2 hover:bg-red-600">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </aside>
 
         <!-- Content -->
         <main class="flex-1 pb-24 md:pb-0">
@@ -126,59 +172,29 @@
             <section class="px-4 py-6 md:px-8">
                 @yield('content')
             </section>
-
         </main>
-
     </div>
-    <!-- Bottom Navigation Mobile -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-50">
+    <script>
+        const openBtn = document.getElementById("openSidebar");
+        const closeBtn = document.getElementById("closeSidebar");
 
-        <div class="grid grid-cols-4 h-16">
+        const sidebar = document.getElementById("mobileSidebar");
+        const overlay = document.getElementById("sidebarOverlay");
 
-            <a href="{{ route('dashboard') }}" class="flex flex-col items-center justify-center text-sm">
+        openBtn.addEventListener("click", () => {
+            sidebar.classList.remove("-translate-x-full");
+            overlay.classList.remove("hidden");
+        });
 
-                📊
-                <span>Dashboard</span>
+        function closeSidebar() {
+            sidebar.classList.add("-translate-x-full");
+            overlay.classList.add("hidden");
+        }
 
-            </a>
+        closeBtn.addEventListener("click", closeSidebar);
 
-            <a href="{{ route('lomba.index') }}" class="flex flex-col items-center justify-center text-sm">
-
-                🏆
-                <span>Lomba</span>
-
-            </a>
-
-            <a href="{{ route('berita.index') }}" class="flex flex-col items-center justify-center text-sm">
-
-                📰
-                <span>Berita</span>
-
-            </a>
-
-            <a href="{{ route('registration.lomba') }}" class="flex flex-col items-center justify-center text-sm">
-
-                📋
-                <span>Pendaftaran Lomba</span>
-
-            </a>
-
-            <form action="{{ route('logout') }}" method="POST" class="flex items-center justify-center">
-
-                @csrf
-
-                <button class="flex flex-col items-center justify-center text-red-500 text-sm">
-
-                    🚪
-                    <span>Logout</span>
-
-                </button>
-
-            </form>
-
-        </div>
-
-    </nav>
+        overlay.addEventListener("click", closeSidebar);
+    </script>
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 </body>
 

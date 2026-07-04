@@ -144,20 +144,18 @@
                 </div>
 
                 {{-- Content --}}
-                <div class="md:col-span-2">
+                <div class="col-span-1 md:col-span-2">
 
                     <label class="block mb-2 font-medium">
                         Isi Berita
                     </label>
 
-                    <textarea id="contentEditor" name="content">
-
-                    {{ old('content') }}
-
-                </textarea>
+                    <div class="overflow-x-auto">
+                        <textarea id="contentEditor" name="content" class="w-full">{{ old('content') }}</textarea>
+                    </div>
 
                     @error('content')
-                        <p class="text-red-500 text-sm mt-1">
+                        <p class="mt-1 text-sm text-red-500">
                             {{ $message }}
                         </p>
                     @enderror
@@ -191,6 +189,19 @@
     <script>
         ClassicEditor
             .create(document.querySelector('#contentEditor'))
+            .then(editor => {
+
+                const height = window.innerWidth < 768 ? '300px' : '500px';
+
+                editor.editing.view.change(writer => {
+                    writer.setStyle(
+                        'min-height',
+                        height,
+                        editor.editing.view.document.getRoot()
+                    );
+                });
+
+            })
             .catch(error => {
                 console.error(error);
             });

@@ -87,6 +87,15 @@
                         class="bg-gray-200 hover:bg-gray-300 px-6 rounded-lg flex items-center">
                         Reset
                     </a>
+                    
+                    <a href="{{ route('registration.export', [
+                        'lomba' => $lomba->id,
+                        'search' => request('search'),
+                        'status' => request('status'),
+                    ]) }}"
+                        class="bg-green-600 hover:bg-green-700 text-white px-6 rounded-lg flex items-center">
+                        Export Excel
+                    </a>
                 </div>
             </form>
         </div>

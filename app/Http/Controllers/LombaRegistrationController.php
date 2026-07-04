@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Lomba;
 use App\Models\LombaRegistration;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\LombaRegistrationExport;
 
 class LombaRegistrationController extends Controller
 {
@@ -63,5 +65,18 @@ class LombaRegistrationController extends Controller
 
         return back()
             ->with('success', 'Status berhasil diperbarui.');
+    }
+
+    // export excel
+    public function export(Request $request, Lomba $lomba)
+    {
+        return Excel::download(
+            new LombaRegistrationExport(
+                $lomba,
+                $request->search,
+                $request->status
+            ),
+            'peserta-' . $lomba->title . '.xlsx'
+        );
     }
 }

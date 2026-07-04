@@ -49,6 +49,12 @@ Route::middleware('auth')->group(function () {
         [LombaRegistrationController::class, 'updateStatus']
     )->name('registration.update');
 
+    //export
+    Route::get(
+        '/registrations/{lomba}/export',
+        [LombaRegistrationController::class, 'export']
+    )->name('registration.export');
+
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
 });

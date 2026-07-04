@@ -19,15 +19,17 @@
     {{-- Search --}}
     <div class="bg-white rounded-xl shadow-sm p-4 mb-6">
         <form action="{{ route('dashboard') }}" method="GET">
-            <div class="flex gap-2">
+            <div class="flex flex-col sm:flex-row gap-3">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari berita atau lomba..."
-                    class="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1C3281]">
-                <button type="submit" class="bg-[#1C3281] text-white px-5 rounded-lg hover:bg-blue-900">
+                    class="w-full flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1C3281]">
+                <button type="submit"
+                    class="w-full sm:w-auto bg-[#1C3281] text-white px-5 py-3 rounded-lg hover:bg-blue-900">
                     Cari
                 </button>
 
                 @if (request('search'))
-                    <a href="{{ route('dashboard') }}" class="bg-gray-200 px-4 py-3 rounded-lg">
+                    <a href="{{ route('dashboard') }}"
+                        class="w-full sm:w-auto text-center bg-gray-200 px-4 py-3 rounded-lg">
                         Reset
                     </a>
                 @endif
@@ -53,7 +55,7 @@
     @endif
 
     {{-- Statistik --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6 mb-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-6 mb-8">
         {{-- total lomba --}}
         <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-[#1C3281]">
             <div class="flex justify-between items-center">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BeritaResource;
 use App\Models\Berita;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class BeritasController extends Controller
      */
     public function index()
     {
-        return response()->json(
+        return BeritaResource::collection(
             Berita::latest()->get()
         );
     }
@@ -29,9 +30,9 @@ class BeritasController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Berita $berita)
     {
-        //
+        return new BeritaResource($berita);
     }
 
     /**
