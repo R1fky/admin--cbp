@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Redirect empty requests to public/
+    RewriteRule ^$ public/ [L]
+    
+    # Redirect all other requests (if they don't already start with public/) to public/
+    RewriteRule ^((?!public/).*)$ public/$1 [L]
+</IfModule>
