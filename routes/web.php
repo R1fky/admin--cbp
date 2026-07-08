@@ -33,10 +33,10 @@ Route::middleware('auth')->group(function () {
         ]);
 
     // Halaman card lomba
-    Route::get(
-        '/pendaftaran-lomba',
-        [LombaRegistrationController::class, 'lombaList']
-    )->name('registration.lomba');
+    // Route::get(
+    //     '/pendaftaran-lomba',
+    //     [LombaRegistrationController::class, 'lombaList']
+    // )->name('registration.lomba');
 
     // daftar peserta berdasarkan lomba
     Route::get(

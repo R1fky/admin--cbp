@@ -52,11 +52,6 @@
                 <a href="{{ route('berita.index') }}" class="block px-4 py-3 rounded-lg hover:bg-blue-800 transition">
                     Entertainment
                 </a>
-
-                <a href="{{ route('registration.lomba') }}"
-                    class="block px-4 py-3 rounded-lg hover:bg-blue-800 transition">
-                    Pendaftaran Lomba
-                </a>
                 <a href="{{ route('edukasi.index') }}" class="block px-4 py-3 rounded-lg hover:bg-blue-800 transition">
                     Education
                 </a>
@@ -125,9 +120,6 @@
                 </a>
                 <a href="{{ route('berita.index') }}" class="block rounded-lg px-4 py-3 hover:bg-blue-800">
                     📰 Kelola Berita
-                </a>
-                <a href="{{ route('registration.lomba') }}" class="block rounded-lg px-4 py-3 hover:bg-blue-800">
-                    📋 Pendaftaran
                 </a>
             </nav>
             <!-- Logout -->

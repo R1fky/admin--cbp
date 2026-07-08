@@ -157,37 +157,46 @@
                                 {{ $lomba->end_date ? \Carbon\Carbon::parse($lomba->end_date)->format('d M Y') : '-' }}
                             </td>
                             <td class="px-6 py-4">
-                                <div class="flex justify-center gap-2">
+                                <div class="flex justify-center items-center gap-2">
+
+                                    {{-- Detail --}}
                                     <button
                                         onclick="openDetailModal(
-                                            @js($lomba->title),
-                                            @js($lomba->kategori?->name),
-                                            @js($lomba->description),
-                                            @js($lomba->location_type),
-                                            @js($lomba->location),
-                                            '{{ $lomba->thumbnail ? asset('storage/' . $lomba->thumbnail) : '' }}',
-                                            '{{ $lomba->release_date?->format('d M Y') }}',
-                                            '{{ $lomba->end_date?->format('d M Y') }}',
-                                            @js($lomba->status_label),
-                                            @js($lomba->status_color)
-                                        )"
-                                        class="bg-green-100 text-green-700 px-3 py-2 rounded-lg hover:bg-green-200">
-                                        Detail
+                                        @js($lomba->title),
+                                        @js($lomba->kategori?->name),
+                                        @js($lomba->description),
+                                        @js($lomba->location_type),
+                                        @js($lomba->location),
+                                        '{{ $lomba->thumbnail ? asset('storage/' . $lomba->thumbnail) : '' }}',
+                                        '{{ $lomba->release_date?->format('d M Y') }}',
+                                        '{{ $lomba->end_date?->format('d M Y') }}',
+                                        @js($lomba->status_label),
+                                        @js($lomba->status_color)
+                                    )"
+                                        title="Detail"
+                                        class="w-10 h-10 flex items-center justify-center rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition">
+                                        👁️
                                     </button>
-                                    {{-- edit lomba --}}
-                                    <a href="{{ route('lomba.edit', $lomba->id) }}"
-                                        class="bg-blue-100 text-blue-700 px-3 py-2 rounded-lg hover:bg-blue-200">
-                                        Edit
+
+                                    {{-- Edit --}}
+                                    <a href="{{ route('lomba.edit', $lomba) }}" title="Edit"
+                                        class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition">
+                                        ✏️
                                     </a>
-                                    {{-- hapus lomba --}}
-                                    <button
-                                        onclick="openDeleteModal(
-                                            '{{ $lomba->id }}',
-                                            '{{ $lomba->title }}'
-                                        )"
-                                        class="bg-red-100 text-red-700 px-3 py-2 rounded-lg hover:bg-red-200">
-                                        Hapus
+
+                                    {{-- Lihat Peserta --}}
+                                    <a href="{{ route('registration.index', $lomba) }}" title="Lihat Peserta"
+                                        class="w-10 h-10 flex items-center justify-center rounded-lg bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition">
+                                        👥
+                                    </a>
+
+                                    {{-- Hapus --}}
+                                    <button onclick="openDeleteModal('{{ $lomba->id }}','{{ $lomba->title }}')"
+                                        title="Hapus"
+                                        class="w-10 h-10 flex items-center justify-center rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition">
+                                        🗑️
                                     </button>
+
                                 </div>
                             </td>
                         </tr>

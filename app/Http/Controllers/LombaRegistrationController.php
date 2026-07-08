@@ -10,18 +10,6 @@ use App\Exports\LombaRegistrationExport;
 
 class LombaRegistrationController extends Controller
 {
-    //
-    public function lombaList()
-    {
-        $lombas = Lomba::withCount('registrations')
-            ->latest()
-            ->get();
-
-        return view(
-            'registration.lomba-list',
-            compact('lombas')
-        );
-    }
 
     public function index(Request $request, Lomba $lomba)
     {
