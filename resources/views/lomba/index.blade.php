@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Kelola Lomba')
-@section('page-title', 'Kelola Lomba')
+@section('title', 'Kelola Engagement')
+@section('page-title', 'Kelola Engagement')
 
 @section('content')
     @if (session('success'))
@@ -45,16 +45,16 @@
             <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                 <div>
                     <h3 class="text-2xl font-bold text-[#1C3281]">
-                        Kelola Lomba
+                        Kelola Engagement
                     </h3>
 
                     <p class="text-gray-500 mt-1">
-                        Kelola seluruh data lomba dan kompetisi Bank Indonesia.
+                        Kelola seluruh data Engagement dan kompetisi Bank Indonesia.
                     </p>
                 </div>
                 <a href="{{ route('lomba.create') }}"
                     class="bg-[#1C3281] hover:bg-blue-900 text-white px-4 py-2 md:px-5 md:py-3 rounded-lg font-semibold transition">
-                    + Tambah Lomba
+                    + Tambah Engagement
                 </a>
             </div>
         </div>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Kelola Entertainment')
-@section('page-title', 'Kelola Entertainment')
+@section('title', 'Education')
+@section('page-title', 'Kelola Education')
 
 @section('content')
     @if (session('success'))
@@ -45,16 +45,16 @@
             <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                 <div>
                     <h3 class="text-2xl font-bold text-[#1C3281]">
-                        Kelola Entertainment
+                        Kelola Education
                     </h3>
 
                     <p class="text-gray-500 mt-1">
-                        Kelola seluruh data Entertainment dan kompetisi Bank Indonesia.
+                        Kelola seluruh data Education dan kompetisi Bank Indonesia.
                     </p>
                 </div>
-                <a href="{{ route('berita.create') }}"
+                <a href="{{ route('edukasi.create') }}"
                     class="bg-[#1C3281] hover:bg-blue-900 text-white px-4 py-2 md:px-5 md:py-3 rounded-lg font-semibold transition">
-                    + Tambah Entertainment
+                    + Tambah edukasi
                 </a>
 
             </div>
@@ -63,33 +63,15 @@
 
         {{-- Search & Filter --}}
         <div class="bg-white rounded-xl shadow-sm p-4">
-            <form method="GET" action="{{ route('berita.index') }}">
+            <form method="GET" action="{{ route('edukasi.index') }}">
 
                 <div class="flex flex-col md:flex-row gap-3">
 
                     {{-- Search Judul --}}
                     <div class="flex-1">
                         <input type="text" name="search" value="{{ request('search') }}"
-                            placeholder="Cari judul berita..."
+                            placeholder="Cari judul edukasi..."
                             class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#1C3281] focus:outline-none">
-                    </div>
-
-                    {{-- Filter Kategori --}}
-                    <div class="md:w-60">
-                        <select name="kategori_id"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#1C3281] focus:outline-none">
-
-                            <option value="">
-                                Semua Kategori
-                            </option>
-
-                            @foreach ($kategoris as $kategori)
-                                <option value="{{ $kategori->id }}"
-                                    {{ request('kategori_id') == $kategori->id ? 'selected' : '' }}>
-                                    {{ $kategori->name }}
-                                </option>
-                            @endforeach
-                        </select>
                     </div>
 
                     {{-- Tombol Cari --}}
@@ -98,7 +80,7 @@
                         Cari
                     </button>
                     {{-- Tombol Reset --}}
-                    <a href="{{ route('berita.index') }}"
+                    <a href="{{ route('edukasi.index') }}"
                         class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold transition text-center">
                         Reset
                     </a>
@@ -112,16 +94,13 @@
                 <thead class="bg-[#1C3281] text-white">
                     <tr>
                         <th class="px-6 py-4 text-left">
-                            image
+                            Judul
                         </th>
                         <th class="px-6 py-4 text-left">
-                            Title
+                            file
                         </th>
                         <th class="px-6 py-4 text-left">
-                            Kategori
-                        </th>
-                        <th class="px-6 py-4 text-left">
-                            Published At
+                            Link
                         </th>
                         <th class="px-6 py-4 text-center">
                             Aksi
@@ -129,55 +108,74 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($beritas as $berita)
+                    @forelse($edukasis as $edukasi)
                         <tr class="border-b hover:bg-slate-50">
                             <td class="px-6 py-4">
-                                @if ($berita->image)
-                                    <img src="{{ asset('storage/' . $berita->image) }}"
-                                        class="w-20 h-12 object-cover rounded">
+                                <h4 class="font-semibold">
+                                    {{ $edukasi->judul }}
+                                </h4>
+
+                                <p class="text-sm text-gray-500 mt-1">
+                                    {{ Str::limit($edukasi->deskripsi, 80) }}
+                                </p>
+                            </td>
+
+                            {{-- FILE ATAU PHOTO --}}
+                            <td class="px-6 py-4">
+                                @if ($edukasi->file)
+                                    @php
+                                        $ext = pathinfo($edukasi->file, PATHINFO_EXTENSION);
+                                    @endphp
+
+                                    @if (in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'webp']))
+                                        <img src="{{ asset('storage/' . $edukasi->file) }}"
+                                            class="w-20 h-20 object-cover rounded">
+                                    @elseif($ext == 'pdf')
+                                        <span class="bg-red-100 text-red-600 px-3 py-2 rounded-lg">
+                                            📄 PDF
+                                        </span>
+                                    @endif
                                 @else
-                                    <div class="w-20 h-12 bg-gray-200 rounded"></div>
+                                    <span class="text-gray-400">
+                                        Tidak ada file
+                                    </span>
                                 @endif
                             </td>
+                            {{-- LINK  --}}
                             <td class="px-6 py-4">
-                                <h4 class="font-semibold text-gray-800">
-                                    {{ $berita->title }}
-                                </h4>
+
+                                @if ($edukasi->link)
+                                    <a href="{{ $edukasi->link }}" target="_blank" class="text-blue-600 hover:underline">
+                                        Buka Link
+                                    </a>
+                                @else
+                                    -
+                                @endif
+
                             </td>
-                            <td class="px-6 py-4">
-                                <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
-                                    {{ $berita->kategori->name ?? '-' }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-gray-600">
-                                {{ $berita->published_at ? \Carbon\Carbon::parse($berita->published_at)->format('d M Y') : '-' }}
-                            </td>
+
                             <td class="px-6 py-4">
                                 <div class="flex justify-center gap-2">
                                     <button
                                         onclick="openDetailModal(
-                                            @js($berita->title),
-                                            @js($berita->kategori?->name),
-                                            @js($berita->excerpt),
-                                            @js($berita->content),
-                                            @js($berita->author),
-                                            @js($berita->source),
-                                            '{{ $berita->image ? asset('storage/' . $berita->image) : '' }}',
-                                            '{{ $berita->published_at ? \Carbon\Carbon::parse($berita->published_at)->format('d M Y') : '-' }}'
+                                            @js($edukasi->judul),
+                                            @js($edukasi->deskripsi),
+                                            @js($edukasi->link),
+                                            @js($edukasi->file)
                                         )"
                                         class="bg-green-100 text-green-700 px-3 py-2 rounded-lg hover:bg-green-200">
                                         Detail
                                     </button>
-                                    {{-- edit berita --}}
-                                    <a href="{{ route('berita.edit', $berita->id) }}"
+                                    {{-- edit edukasi --}}
+                                    <a href="{{ route('edukasi.edit', $edukasi->id) }}"
                                         class="bg-blue-100 text-blue-700 px-3 py-2 rounded-lg hover:bg-blue-200">
                                         Edit
                                     </a>
-                                    {{-- hapus berita --}}
+                                    {{-- hapus edukasi --}}
                                     <button
                                         onclick="openDeleteModal(
-                                            '{{ $berita->id }}',
-                                            '{{ $berita->title }}'
+                                            '{{ $edukasi->id }}',
+                                            '{{ $edukasi->judul }}'
                                         )"
                                         class="bg-red-100 text-red-700 px-3 py-2 rounded-lg hover:bg-red-200">
                                         Hapus
@@ -188,7 +186,7 @@
                     @empty
                         <tr>
                             <td colspan="5" class="text-center py-10 text-gray-500">
-                                Belum ada data berita
+                                Belum ada data edukasi
                             </td>
                         </tr>
                     @endforelse
@@ -198,67 +196,50 @@
 
         {{-- Pagination --}}
         <div>
-            {{ $beritas->links() }}
+            {{ $edukasis->links() }}
         </div>
 
     </div>
 
     {{-- Modal Detail --}}
     <div id="detailModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl w-full max-w-4xl max-h-[95vh] overflow-y-auto shadow-2xl">
-            <!-- Header -->
-            <div class="sticky top-0 bg-white border-b p-5 flex justify-between items-center z-10">
+        <div class="bg-white rounded-2xl w-full max-w-3xl shadow-xl">
+            <div class="border-b p-5 flex justify-between items-center">
                 <h3 class="text-2xl font-bold text-[#1C3281]">
-                    Detail Berita
+                    Detail Edukasi
                 </h3>
-                <button onclick="closeDetailModal()" class="text-gray-500 hover:text-red-500 text-2xl">
+                <button onclick="closeDetailModal()" class="text-2xl text-gray-500 hover:text-red-500">
                     ✕
                 </button>
             </div>
             <div class="p-6">
-                <!-- Gambar -->
-                <img id="detail_image" class="w-full h-[350px] object-cover rounded-xl mb-6">
-                <!-- Kategori -->
-                <div class="mb-3">
-                    <span id="detail_kategori" class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
-                    </span>
-                </div>
-                <!-- Judul -->
-                <h1 id="detail_title" class="text-3xl font-bold text-[#1C3281] mb-4 leading-tight">
-                </h1>
-                <!-- Metadata -->
-                <div class="flex flex-wrap gap-4 text-sm text-gray-500 border-b pb-4 mb-5">
-                    <div>
-                        ✍️ <span id="detail_author"></span>
-                    </div>
-                    <div>
-                        📅 <span id="detail_tanggal"></span>
-                    </div>
-                    <div>
-                        🌐 <span id="detail_source"></span>
-                    </div>
-                </div>
-                <!-- Ringkasan -->
-                <div class="bg-slate-50 border-l-4 border-[#1C3281] p-4 rounded-lg mb-6">
-                    <h4 class="font-semibold text-[#1C3281] mb-2">
-                        Ringkasan
+                <div id="previewContainer" class="mb-5"></div>
+                <h2 id="detail_title" class="text-2xl font-bold text-[#1C3281] mb-4">
+                </h2>
+                <div class="mb-5">
+                    <h4 class="font-semibold mb-2">
+                        Deskripsi
                     </h4>
-                    <p id="detail_excerpt" class="text-gray-700 italic">
+                    <p id="detail_deskripsi" class="text-gray-700 leading-7">
                     </p>
                 </div>
-                <!-- Isi Berita -->
-                <div id="detail_content" class="prose prose-lg max-w-none leading-8">
+                <div>
+                    <h4 class="font-semibold mb-2">
+                        Link
+                    </h4>
+                    <a id="detail_link" target="_blank" class="text-blue-600 hover:underline break-all">
+                    </a>
                 </div>
             </div>
         </div>
     </div>
     {{-- End Modal Detail --}}
 
-    {{-- Modal Hapus Berita --}}
+    {{-- Modal Hapus edukasi --}}
     <div id="deleteModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
             <h3 class="text-xl font-bold text-[#CF1A25] mb-3">
-                Hapus Berita
+                Hapus edukasi
             </h3>
             <p class="text-gray-600 mb-5">
                 Apakah Anda yakin ingin menghapus:
@@ -278,64 +259,74 @@
             </form>
         </div>
     </div>
-    {{-- End Modal Hapus Berita --}}
+    {{-- End Modal Hapus edukasi --}}
 
     <script>
         // detail modal
         function openDetailModal(
-            title,
-            kategori,
-            excerpt,
-            content,
-            author,
-            source,
-            image,
-            published_at
+            judul,
+            deskripsi,
+            link,
+            file
         ) {
 
-            document.getElementById('detail_title').innerText =
-                title;
+            document.getElementById('detail_title').innerText = judul;
 
-            document.getElementById('detail_kategori').innerText =
-                kategori || '-';
+            document.getElementById('detail_deskripsi').innerText =
+                deskripsi ?? '-';
 
-            document.getElementById('detail_excerpt').innerText =
-                excerpt || '-';
+            const linkElement = document.getElementById('detail_link');
 
-            document.getElementById('detail_author').innerText =
-                author || 'Admin';
+            if (link) {
 
-            document.getElementById('detail_source').innerText =
-                source || '-';
-
-            document.getElementById('detail_tanggal').innerText =
-                published_at;
-
-            document.getElementById('detail_content').innerHTML =
-                content;
-
-            const img =
-                document.getElementById('detail_image');
-
-            if (image) {
-
-                img.src = image;
-
-                img.classList.remove('hidden');
+                linkElement.href = link;
+                linkElement.innerText = link;
+                linkElement.classList.remove('hidden');
 
             } else {
 
-                img.classList.add('hidden');
+                linkElement.innerText = '-';
+                linkElement.removeAttribute('href');
 
             }
 
-            document.getElementById('detailModal')
+            const preview = document.getElementById('previewContainer');
+
+            preview.innerHTML = '';
+
+            if (file) {
+
+                const ext = file.split('.').pop().toLowerCase();
+
+                if (['jpg', 'jpeg', 'png', 'webp'].includes(ext)) {
+
+                    preview.innerHTML = `
+                <img
+                    src="/storage/${file}"
+                    class="w-full max-h-96 object-contain rounded-lg border">
+            `;
+
+                } else if (ext === 'pdf') {
+
+                    preview.innerHTML = `
+                <a
+                    href="/storage/${file}"
+                    target="_blank"
+                    class="inline-block bg-red-500 text-white px-4 py-2 rounded-lg">
+                    📄 Lihat PDF
+                </a>
+            `;
+                }
+            }
+
+            document
+                .getElementById('detailModal')
                 .classList.remove('hidden');
         }
 
         function closeDetailModal() {
-
-            document.getElementById('detailModal')
+            document
+                .getElementById('detailModal')
                 .classList.add('hidden');
         }
 
@@ -344,7 +335,7 @@
             document.getElementById('deleteTitle').innerText = title;
 
             document.getElementById('deleteForm').action =
-                `/berita/${id}`;
+                `/edukasi/${id}`;
 
             document.getElementById('deleteModal')
                 .classList.remove('hidden');

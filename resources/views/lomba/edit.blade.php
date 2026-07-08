@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Lomba')
-@section('page-title', 'Edit Lomba')
+@section('title', 'Edit Engagement')
+@section('page-title', 'Edit Engagement')
 
 @section('content')
 
     <div class="bg-white rounded-xl shadow-sm p-6">
 
         <h2 class="text-2xl font-bold text-[#1C3281] mb-6">
-            Edit Lomba
+            Edit Engagement
         </h2>
 
         <form action="{{ route('lomba.update', $lomba->id) }}" method="POST" enctype="multipart/form-data">

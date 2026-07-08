@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Berita')
-@section('page-title', 'Edit Berita')
+@section('title', 'Edit Entertainment')
+@section('page-title', 'Edit Entertainment')
 
 @section('content')
 
     <div class="bg-white rounded-xl shadow-sm p-6">
 
         <h2 class="text-2xl font-bold text-[#1C3281] mb-6">
-            Edit Berita
+            Edit Entertainment
         </h2>
 
         <form action="{{ route('berita.update', $berita->id) }}" method="POST" enctype="multipart/form-data">

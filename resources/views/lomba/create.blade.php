@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Lomba')
-@section('page-title', 'Tambah Lomba')
+@section('title', 'Tambah Engagement')
+@section('page-title', 'Tambah Engagement')
 
 @section('content')
 
     <div class="bg-white rounded-xl shadow-sm p-6">
 
         <h2 class="text-2xl font-bold text-[#1C3281] mb-6">
-            Tambah Lomba
+            Tambah Engagement
         </h2>
 
         <form action="{{ route('lomba.store') }}" method="POST" enctype="multipart/form-data">
@@ -97,7 +97,8 @@
                         Location
                     </label>
 
-                    <input type="text" name="location" class="w-full border rounded-lg px-4 py-3 @error('location') border-red-500 @enderror">
+                    <input type="text" name="location"
+                        class="w-full border rounded-lg px-4 py-3 @error('location') border-red-500 @enderror">
 
                     @error('location')
                         <p class="text-red-500 text-sm mt-1">

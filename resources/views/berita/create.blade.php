@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Berita')
-@section('page-title', 'Tambah Berita')
+@section('title', 'Tambah Entertainment')
+@section('page-title', 'Tambah Entertainment')
 
 @section('content')
 
     <div class="bg-white rounded-xl shadow-sm p-6">
 
         <h2 class="text-2xl font-bold text-[#1C3281] mb-6">
-            Tambah Berita
+            Tambah Entertainment
         </h2>
 
         <form action="{{ route('berita.store') }}" method="POST" enctype="multipart/form-data">

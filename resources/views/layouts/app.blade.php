@@ -46,16 +46,19 @@
                 </a>
 
                 <a href="{{ route('lomba.index') }}" class="block px-4 py-3 rounded-lg hover:bg-blue-800 transition">
-                    Kelola Lomba
+                    Engagement
                 </a>
 
                 <a href="{{ route('berita.index') }}" class="block px-4 py-3 rounded-lg hover:bg-blue-800 transition">
-                    Kelola Berita
+                    Entertainment
                 </a>
 
                 <a href="{{ route('registration.lomba') }}"
                     class="block px-4 py-3 rounded-lg hover:bg-blue-800 transition">
                     Pendaftaran Lomba
+                </a>
+                <a href="{{ route('edukasi.index') }}" class="block px-4 py-3 rounded-lg hover:bg-blue-800 transition">
+                    Education
                 </a>
 
             </nav>

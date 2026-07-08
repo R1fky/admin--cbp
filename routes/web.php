@@ -6,6 +6,7 @@ use App\Http\Controllers\LombaController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LombaRegistrationController;
+use App\Http\Controllers\EdukasiController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -54,6 +55,9 @@ Route::middleware('auth')->group(function () {
         '/registrations/{lomba}/export',
         [LombaRegistrationController::class, 'export']
     )->name('registration.export');
+
+    //edukasi route
+    Route::resource('edukasi', EdukasiController::class);
 
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
