@@ -160,6 +160,7 @@
                                         onclick="openDetailModal(
                                             @js($edukasi->judul),
                                             @js($edukasi->deskripsi),
+                                            @js($edukasi->content),
                                             @js($edukasi->link),
                                             @js($edukasi->file)
                                         )"
@@ -223,6 +224,13 @@
                     <p id="detail_deskripsi" class="text-gray-700 leading-7">
                     </p>
                 </div>
+                <div class="mb-5">
+                    <h4 class="font-semibold mb-2">
+                        Content
+                    </h4>
+                    <p id="detail_content" class="text-gray-700 leading-7">
+                    </p>
+                </div>
                 <div>
                     <h4 class="font-semibold mb-2">
                         Link
@@ -266,6 +274,7 @@
         function openDetailModal(
             judul,
             deskripsi,
+            content,
             link,
             file
         ) {
@@ -274,6 +283,8 @@
 
             document.getElementById('detail_deskripsi').innerText =
                 deskripsi ?? '-';
+            document.getElementById('detail_content').innerText =
+                content ?? '-';
 
             const linkElement = document.getElementById('detail_link');
 

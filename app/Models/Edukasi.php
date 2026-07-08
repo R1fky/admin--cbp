@@ -9,6 +9,7 @@ class Edukasi extends Model
     protected $fillable = [
         'judul',
         'deskripsi',
+        'content',
         'file',
         'link'
     ];

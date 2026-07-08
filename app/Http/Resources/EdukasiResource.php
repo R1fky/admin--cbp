@@ -18,6 +18,7 @@ class EdukasiResource extends JsonResource
             'id' => $this->id,
             'judul' => $this->judul,
             'deskripsi' => $this->deskripsi,
+            'content' => $this->content,
             'file' => $this->file ? asset('storage/' . $this->file) : null,
             'link' => $this->link,
             'created_at' => $this->created_at,

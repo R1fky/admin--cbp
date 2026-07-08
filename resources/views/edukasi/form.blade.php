@@ -29,6 +29,20 @@
 
 <div class="mb-4">
     <label class="block mb-2 font-semibold">
+        Content
+    </label>
+
+    <textarea name="content" id="content" rows="8" class="w-full border rounded-lg px-4 py-2">{{ old('content', $edukasi->content ?? '') }}</textarea>
+
+    @error('content')
+        <p class="text-red-500 text-sm mt-1">
+            {{ $message }}
+        </p>
+    @enderror
+</div>
+
+<div class="mb-4">
+    <label class="block mb-2 font-semibold">
         Upload File
     </label>
 
@@ -40,7 +54,7 @@
     </p>
 
     @if (!empty($edukasi?->file))
-        @php    
+        @php
             $ext = strtolower(pathinfo($edukasi->file, PATHINFO_EXTENSION));
         @endphp
 
@@ -78,3 +92,10 @@
         </p>
     @enderror
 </div>
+
+
+<script>
+    ClassicEditor
+        .create(document.querySelector('#content'))
+        .catch(error => console.error(error));
+</script>
