@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\LombasController;
 use App\Http\Controllers\Api\BeritasController;
 use App\Http\Controllers\Api\LombaRegistrationsController;
+use App\Http\Controllers\Api\EdukasisController;
 
 Route::prefix('v1')
     ->name('api.')
@@ -16,6 +17,12 @@ Route::prefix('v1')
             ]);
 
         Route::apiResource('beritas', BeritasController::class)
+            ->only([
+                'index',
+                'show'
+            ]);
+
+        Route::apiResource('edukasis', EdukasisController::class)
             ->only([
                 'index',
                 'show'
