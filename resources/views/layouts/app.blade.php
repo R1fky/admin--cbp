@@ -116,10 +116,13 @@
                     📊 Dashboard
                 </a>
                 <a href="{{ route('lomba.index') }}" class="block rounded-lg px-4 py-3 hover:bg-blue-800">
-                    🏆 Kelola Lomba
+                    🏆 Engagement
                 </a>
                 <a href="{{ route('berita.index') }}" class="block rounded-lg px-4 py-3 hover:bg-blue-800">
-                    📰 Kelola Berita
+                    📰 Entertainment
+                </a>
+                <a href="{{ route('edukasi.index') }}" class="block rounded-lg px-4 py-3 hover:bg-blue-800">
+                    📰 Education
                 </a>
             </nav>
             <!-- Logout -->

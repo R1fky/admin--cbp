@@ -26,17 +26,16 @@ Route::middleware('auth')->group(function () {
         [DashboardController::class, 'index']
     )->name('dashboard');
 
+    Route::post(
+        '/dashboard/home',
+        [DashboardController::class, 'storeHome']
+    )->name('dashboard.home.store');
+    
     Route::resource('lomba', LombaController::class);
     Route::resource('berita', BeritaController::class)
         ->parameters([
             'berita' => 'berita'
         ]);
-
-    // Halaman card lomba
-    // Route::get(
-    //     '/pendaftaran-lomba',
-    //     [LombaRegistrationController::class, 'lombaList']
-    // )->name('registration.lomba');
 
     // daftar peserta berdasarkan lomba
     Route::get(

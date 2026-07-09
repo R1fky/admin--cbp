@@ -228,8 +228,9 @@
                     <h4 class="font-semibold mb-2">
                         Content
                     </h4>
-                    <p id="detail_content" class="text-gray-700 leading-7">
-                    </p>
+
+                    <div id="detail_content" class="prose max-w-none text-gray-700 leading-7 overflow-y-auto max-h-[450px]">
+                    </div>
                 </div>
                 <div>
                     <h4 class="font-semibold mb-2">
@@ -283,8 +284,8 @@
 
             document.getElementById('detail_deskripsi').innerText =
                 deskripsi ?? '-';
-            document.getElementById('detail_content').innerText =
-                content ?? '-';
+
+            document.getElementById('detail_content').innerHTML = content ?? '-';
 
             const linkElement = document.getElementById('detail_link');
 

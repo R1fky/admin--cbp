@@ -18,4 +18,27 @@
             </div>
         </form>
     </div>
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#contentEditor'))
+            .then(editor => {
+
+                const height = window.innerWidth < 768 ? '300px' : '500px';
+
+                editor.editing.view.change(writer => {
+                    writer.setStyle(
+                        'min-height',
+                        height,
+                        editor.editing.view.document.getRoot()
+                    );
+                });
+
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 @endsection

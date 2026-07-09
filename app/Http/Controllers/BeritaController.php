@@ -64,7 +64,7 @@ class BeritaController extends Controller
             'kategori_id' => 'required|exists:kategori_beritas,id',
             'author' => 'required|string|max:100',
             'source' => 'nullable|string|max:255',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:10240',
             'published_at' => 'required|date'
         ], [
             'title.required' => 'Judul berita wajib diisi.',
@@ -129,7 +129,7 @@ class BeritaController extends Controller
                 'author' => 'required|string|max:100',
                 'source' => 'nullable|string|max:255',
                 'published_at' => 'required|date',
-                'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+                'image' => 'nullable|image|mimes:jpg,jpeg,png|max:10240'
             ],
             [
                 'title.required' => 'Judul berita wajib diisi.',

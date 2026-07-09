@@ -32,7 +32,9 @@
         Content
     </label>
 
-    <textarea name="content" id="content" rows="8" class="w-full border rounded-lg px-4 py-2">{{ old('content', $edukasi->content ?? '') }}</textarea>
+    <textarea id="contentEditor" name="content">
+        {{ old('content', $edukasi->content ?? '') }}
+    </textarea>
 
     @error('content')
         <p class="text-red-500 text-sm mt-1">
@@ -92,10 +94,3 @@
         </p>
     @enderror
 </div>
-
-
-<script>
-    ClassicEditor
-        .create(document.querySelector('#content'))
-        .catch(error => console.error(error));
-</script>

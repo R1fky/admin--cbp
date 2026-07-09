@@ -20,7 +20,7 @@ class LombaRegistrationsController extends Controller
                 'email'    => 'required|email',
                 'phone'    => 'required|max:20',
                 'address'  => 'required',
-                'file'     => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+                'file'     => 'nullable|file|mimes:pdf,doc,docx|max:10240',
             ],
             [
                 'lomba_id.required' => 'Lomba harus dipilih.',

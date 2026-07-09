@@ -64,7 +64,7 @@ class LombaController extends Controller
                 'end_date' => 'required|date|after_or_equal:release_date',
                 'location_type' => 'required|in:online,offline',
                 'location' => 'required|string|max:255',
-                'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+                'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:10240'
             ],
             [
                 'title.required' => 'Judul lomba wajib diisi.',
@@ -142,7 +142,7 @@ class LombaController extends Controller
                 'end_date' => 'required|date|after_or_equal:release_date',
                 'location_type' => 'required|in:online,offline',
                 'location' => 'required|string|max:255',
-                'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:10240',
             ],
             [
                 'title.required' => 'Judul lomba wajib diisi.',

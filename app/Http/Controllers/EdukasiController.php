@@ -44,7 +44,7 @@ class EdukasiController extends Controller
             'judul' => 'required|string|max:255|unique:edukasis,judul',
             'deskripsi' => 'required|string',
             'content' => 'required|string',
-            'file' => 'nullable|mimes:jpg,jpeg,png,webp,pdf|max:5120',
+            'file' => 'nullable|mimes:jpg,jpeg,png,webp,pdf|max:10240',
             'link' => 'nullable|url|max:255',
         ]);
 
@@ -78,7 +78,7 @@ class EdukasiController extends Controller
             ],
             'deskripsi' => 'required|string',
             'content' => 'required|string',
-            'file' => 'nullable|mimes:jpg,jpeg,png,webp,pdf|max:5120',
+            'file' => 'nullable|mimes:jpg,jpeg,png,webp,pdf|max:10240',
             'link' => 'nullable|url|max:2048',
         ], [
             'judul.unique' => 'Judul edukasi sudah digunakan.',

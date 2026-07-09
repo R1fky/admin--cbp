@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\LombasController;
 use App\Http\Controllers\Api\BeritasController;
 use App\Http\Controllers\Api\LombaRegistrationsController;
 use App\Http\Controllers\Api\EdukasisController;
+use App\Http\Controllers\Api\HomeSettingsController;
 
 Route::prefix('v1')
     ->name('api.')
@@ -26,6 +27,11 @@ Route::prefix('v1')
             ->only([
                 'index',
                 'show'
+            ]);
+
+        Route::apiResource('home-settings', HomeSettingsController::class)
+            ->only([
+                'index',
             ]);
 
         Route::post(
