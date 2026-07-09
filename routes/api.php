@@ -28,6 +28,11 @@ Route::prefix('v1')
                 'show'
             ]);
 
+        Route::get(
+            'edukasis/{edukasi}/pdf',
+            [EdukasisController::class, 'pdf']
+        )->name('edukasis.pdf');
+
         Route::post(
             'lomba-registrations',
             [LombaRegistrationsController::class, 'store']
