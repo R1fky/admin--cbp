@@ -83,7 +83,7 @@ class EdukasiController extends Controller
         ], [
             'judul.unique' => 'Judul edukasi sudah digunakan.',
             'file.mimes' => 'File harus berupa JPG, JPEG, PNG, WEBP, atau PDF.',
-            'file.max' => 'Ukuran file maksimal 5MB.',
+            'file.max' => 'Ukuran file maksimal 10MB.',
             'link.url' => 'Link harus berupa URL yang valid.',
         ]);
 

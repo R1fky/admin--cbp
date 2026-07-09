@@ -28,11 +28,14 @@ Route::prefix('v1')
                 'index',
                 'show'
             ]);
-
         Route::apiResource('home-settings', HomeSettingsController::class)
             ->only([
                 'index',
             ]);
+        Route::get(
+            'edukasis/{edukasi}/pdf',
+            [EdukasisController::class, 'pdf']
+        )->name('edukasis.pdf');
 
         Route::post(
             'lomba-registrations',

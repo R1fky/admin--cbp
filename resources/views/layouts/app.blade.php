@@ -124,6 +124,9 @@
                 <a href="{{ route('edukasi.index') }}" class="block rounded-lg px-4 py-3 hover:bg-blue-800">
                     📰 Education
                 </a>
+                <a href="{{ route('edukasi.index') }}" class="block rounded-lg px-4 py-3 hover:bg-blue-800">
+                    📖 Kelola Education
+                </a>
             </nav>
             <!-- Logout -->
             <div class="absolute bottom-0 w-full p-4 border-t border-blue-800">
@@ -193,7 +196,6 @@
 
         overlay.addEventListener("click", closeSidebar);
     </script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 </body>
 
 </html>

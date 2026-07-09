@@ -19,7 +19,9 @@ class EdukasiResource extends JsonResource
             'judul' => $this->judul,
             'deskripsi' => $this->deskripsi,
             'content' => $this->content,
-            'file' => $this->file ? asset('storage/' . $this->file) : null,
+            'file' => $this->file ? route('api.edukasis.pdf', $this->id) : null,
+            'file_name' => $this->file ? basename($this->file) : null,
+            'file_extension' => $this->file ? strtolower(pathinfo($this->file, PATHINFO_EXTENSION)) : null,
             'link' => $this->link,
             'created_at' => $this->created_at,
         ];
