@@ -157,13 +157,60 @@
                             </p>
                         </div>
                     </div>
-                    <div class="text-right">
-                        <p class="font-semibold text-gray-800">
+                    {{-- <div class="text-right">
+                        <a href="{{ route('profile.edit') }}" class="font-semibold text-gray-800 hover:text-blue-600">
+
                             {{ Auth::user()->name }}
-                        </p>
+
+                        </a>
+
                         <p class="text-sm text-gray-500">
                             Administrator
                         </p>
+                    </div> --}}
+
+                    {{-- dropdown edit admin --}}
+                    <div x-data="{ open: false }" class="relative text-right">
+                        <button @click="open = !open" class="flex flex-col items-end focus:outline-none">
+                            <div class="flex items-center gap-2">
+                                <span class="font-semibold text-gray-800">
+                                    {{ Auth::user()->name }}
+                                </span>
+                                <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': open }"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+                            <span class="text-sm text-gray-500">
+                                Administrator
+                            </span>
+                        </button>
+                        <div x-show="open" @click.away="open = false" x-transition
+                            class="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                            <a href="{{ route('profile.edit') }}"
+                                class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition">
+                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5.121 17.804A9 9 0 1118.88 17.8M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <span>Profil Saya</span>
+                            </a>
+                            <div class="border-t"></div>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit"
+                                    class="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 text-red-600 transition">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h5a2 2 0 012 2v1" />
+                                    </svg>
+                                    <span>Logout</span>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
@@ -196,6 +243,7 @@
 
         overlay.addEventListener("click", closeSidebar);
     </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 
 </html>

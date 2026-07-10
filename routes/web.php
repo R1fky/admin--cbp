@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LombaRegistrationController;
 use App\Http\Controllers\EdukasiController;
 use App\Http\Controllers\HomeHeroController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -47,6 +48,7 @@ Route::middleware('auth')->group(function () {
         '/dashboard/youtube',
         [HomeHeroController::class, 'storeYoutube']
     )->name('dashboard.youtube.store');
+
     // Route::put(
     //     '/dashboard/youtube',
     //     [HomeHeroController::class, 'updateYoutube']
@@ -80,6 +82,14 @@ Route::middleware('auth')->group(function () {
     //edukasi route
     Route::resource('edukasi', EdukasiController::class);
 
+    // edit profile
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+
+    Route::put('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+
+    // Logout 
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
 });
