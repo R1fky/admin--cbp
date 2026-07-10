@@ -7,6 +7,7 @@ use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LombaRegistrationController;
 use App\Http\Controllers\EdukasiController;
+use App\Http\Controllers\HomeHeroController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -26,11 +27,32 @@ Route::middleware('auth')->group(function () {
         [DashboardController::class, 'index']
     )->name('dashboard');
 
+    // Hero
     Route::post(
-        '/dashboard/home',
-        [DashboardController::class, 'storeHome']
-    )->name('dashboard.home.store');
-    
+        '/dashboard/heroes',
+        [HomeHeroController::class, 'store']
+    )->name('dashboard.hero.store');
+
+    Route::put(
+        '/dashboard/heroes/{hero}',
+        [HomeHeroController::class, 'update']
+    )->name('dashboard.hero.update');
+
+    Route::delete(
+        '/dashboard/heroes/{hero}',
+        [HomeHeroController::class, 'destroy']
+    )->name('dashboard.hero.destroy');
+
+    Route::post(
+        '/dashboard/youtube',
+        [HomeHeroController::class, 'storeYoutube']
+    )->name('dashboard.youtube.store');
+    // Route::put(
+    //     '/dashboard/youtube',
+    //     [HomeHeroController::class, 'updateYoutube']
+    // )->name('dashboard.youtube.update');
+    // End Hero
+
     Route::resource('lomba', LombaController::class);
     Route::resource('berita', BeritaController::class)
         ->parameters([

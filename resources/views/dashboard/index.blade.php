@@ -384,115 +384,191 @@
 
     {{-- Modal Upload Image to Next --}}
     <!-- Overlay -->
-    <div id="homeModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4">
+    <div id="homeModal" class="fixed inset-0 hidden items-center justify-center bg-black/60 z-50 p-6">
+        <div class="bg-white rounded-2xl w-full max-w-7xl max-h-[92vh] overflow-y-auto shadow-2xl">
+            {{-- Header --}}
+            <div class="flex justify-between items-center border-b p-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-[#1C3281]">
+                        Pengaturan Home
+                    </h2>
+                    <p class="text-gray-500 text-sm mt-1">
+                        Maksimal 3 Hero Banner
+                    </p>
+                </div>
+                <button onclick="closeHomeModal()" class="text-3xl hover:text-red-500">
+                    &times;
+                </button>
+            </div>
+            <div class="p-6">
+                <h3 class="text-xl font-bold mb-5">
+                    Hero Banner
+                </h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    @for ($i = 1; $i <= 3; $i++)
+                        @php
+                            $hero = $heroes->firstWhere('sort_order', $i);
+                        @endphp
+                        <div class="rounded-xl border shadow">
+                            <img src="{{ $hero ? asset('storage/' . $hero->image) : 'https://placehold.co/600x350?text=Hero+' . $i }}"
+                                class="w-full h-44 object-cover">
+                            <div class="p-5">
+                                <h4 class="font-bold text-lg">
+                                    Hero {{ $i }}
+                                </h4>
+                                @if ($hero)
+                                    <p class="font-semibold mt-3">
+                                        {{ $hero->title }}
+                                    </p>
+                                    <p class="text-sm text-gray-500 mt-1 line-clamp-3">
+                                        {{ $hero->description }}
+                                    </p>
+                                @else
+                                    <p class="text-gray-400 mt-3">
+                                        Belum ada Hero.
+                                    </p>
+                                @endif
+                                <div class="flex gap-2 mt-5">
 
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+                                    @if ($hero)
+                                        <button onclick='editHero(@json($hero))'
+                                            class="flex-1 flex items-center justify-center gap-2 bg-[#1C3281] hover:bg-[#16296a] text-white rounded-lg py-2 transition">
+                                            ✏️
+                                            <span>Edit</span>
+                                        </button>
+                                        <form action="{{ route('dashboard.hero.destroy', $hero) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Hapus Hero?')"
+                                                class="w-11 h-11 flex items-center justify-center rounded-lg bg-red-500 hover:bg-red-600 text-white transition">
+                                                🗑️
+                                            </button>
+                                        </form>
+                                    @else
+                                        <button onclick="openHeroModal({{ $i }})"
+                                            class="flex-1 flex items-center justify-center gap-2 bg-[#1C3281] hover:bg-[#16296a] text-white rounded-lg py-2 transition">
+                                            ＋
+                                            <span>Tambah</span>
+                                        </button>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endfor
+                </div>
 
-            <div class="flex justify-between items-center p-6 border-b">
+                <hr class="my-10">
 
-                <h2 class="text-2xl font-bold text-[#1C3281]">
-                    Pengaturan Home
+                <form action="{{ route('dashboard.youtube.store') }}" method="POST">
+
+                    @csrf
+
+                    <label class="font-semibold">
+                        Link Youtube
+                    </label>
+
+                    <input type="url" name="youtube_url" value="{{ old('youtube_url') }}"
+                        class="mt-2 w-full border rounded-lg px-4 py-3">
+
+                    <div class="text-right mt-5">
+                        <button class="bg-[#1C3281] text-white px-5 py-3 rounded-lg">
+                            Simpan
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Modal -->
+    <div id="heroModal" class="fixed inset-0 hidden items-center justify-center bg-black/60 z-[60] p-4">
+
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-md">
+
+            <!-- Header -->
+            <div class="flex items-center justify-between border-b px-5 py-4">
+
+                <h2 id="heroModalTitle" class="text-lg font-bold text-[#1C3281]">
+                    Tambah Hero
                 </h2>
 
-                <button onclick="closeHomeModal()" class="text-gray-500 hover:text-red-500 text-2xl">
-
+                <button onclick="closeHeroModal()" class="text-2xl text-gray-500 hover:text-red-500">
                     &times;
-
                 </button>
 
             </div>
 
-            @if ($errors->any())
-                <div class="mb-4 rounded-lg bg-red-100 p-4 text-red-700">
-                    <ul class="list-disc pl-5">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <form action="{{ route('dashboard.home.store') }}" method="POST" enctype="multipart/form-data"
-                class="p-6">
+            <form id="heroForm" method="POST" enctype="multipart/form-data" class="p-5">
 
                 @csrf
 
-                <div class="grid md:grid-cols-2 gap-6">
+                <input type="hidden" id="hero_method" name="_method" value="POST">
 
-                    {{-- Judul --}}
-                    <div>
-                        <label class="font-medium">
-                            Judul Hero
-                        </label>
+                <input type="hidden" id="sort_order" name="sort_order">
 
-                        <input type="text" name="hero_title" value="{{ old('hero_title') }}"
-                            class="mt-2 w-full border rounded-lg px-4 py-3">
-                    </div>
+                <!-- Judul -->
+                <div class="mb-4">
 
-                    {{-- Youtube --}}
-                    <div>
-                        <label class="font-medium">
-                            Link Youtube
-                        </label>
+                    <label class="block text-sm font-semibold mb-2">
+                        Judul Hero
+                    </label>
 
-                        <input type="url" name="youtube_url" value="{{ old('youtube_url') }}"
-                            class="mt-2 w-full border rounded-lg px-4 py-3">
-                    </div>
-
-                    {{-- Deskripsi --}}
-                    <div class="md:col-span-2">
-                        <label class="font-medium">
-                            Deskripsi Hero
-                        </label>
-
-                        <textarea rows="4" name="hero_description" class="mt-2 w-full border rounded-lg px-4 py-3">{{ old('hero_description') }}</textarea>
-                    </div>
-
-                    {{-- Upload --}}
-                    <div>
-
-                        <label class="font-medium">
-                            Upload Gambar Hero
-                        </label>
-
-                        <input id="heroImage" type="file" name="hero_image" accept="image/*"
-                            onchange="previewHeroImage(event)" class="mt-2 w-full border rounded-lg p-2">
-
-                        <p class="text-sm text-gray-500 mt-2">
-                            JPG, PNG, WEBP
-                        </p>
-
-                    </div>
-
-                    {{-- Preview --}}
-                    <div>
-
-                        <label class="font-medium">
-                            Preview
-                        </label>
-
-                        <div class="mt-2">
-
-                            <img id="previewImage" src="https://placehold.co/600x300?text=Preview"
-                                class="rounded-xl border h-52 w-full object-cover">
-
-                        </div>
-
-                    </div>
+                    <input id="hero_title" type="text" name="title"
+                        class="w-full rounded-lg border px-3 py-2 text-sm">
 
                 </div>
 
-                <div class="flex justify-end gap-3 mt-8">
+                <!-- Deskripsi -->
+                <div class="mb-4">
 
-                    <button type="button" onclick="closeHomeModal()" class="px-5 py-3 rounded-lg bg-gray-200">
+                    <label class="block text-sm font-semibold mb-2">
+                        Deskripsi
+                    </label>
+
+                    <textarea id="hero_description" name="description" rows="2"
+                        class="w-full rounded-lg border px-3 py-2 text-sm resize-none"></textarea>
+
+                </div>
+
+                <!-- Upload -->
+                <div class="mb-4">
+
+                    <label class="block text-sm font-semibold mb-2">
+                        Upload Gambar
+                    </label>
+
+                    <input id="hero_image" type="file" name="image" accept="image/*" onchange="previewHero(event)"
+                        class="w-full rounded-lg border border-gray-300 bg-white text-sm
+           file:mr-4 file:border-0
+           file:bg-[#1C3281] file:text-white
+           file:px-4 file:py-2
+           file:rounded-l-lg
+           file:cursor-pointer
+           hover:file:bg-blue-900">
+
+                </div>
+
+                <!-- Preview -->
+                <div class="mb-5">
+
+                    <img id="hero_preview" src="https://placehold.co/500x220?text=Preview"
+                        class="w-full h-28 rounded-lg border object-cover">
+
+                </div>
+
+                <!-- Button -->
+                <div class="flex justify-end gap-2 border-t pt-4">
+
+                    <button type="button" onclick="closeHeroModal()" class="rounded-lg bg-gray-200 px-4 py-2 text-sm">
 
                         Batal
 
                     </button>
 
-                    <button class="px-5 py-3 rounded-lg bg-[#1C3281] text-white">
+                    <button type="submit" class="rounded-lg bg-[#1C3281] px-4 py-2 text-sm text-white hover:bg-blue-900">
 
-                        Simpan Pengaturan
+                        Simpan
 
                     </button>
 
@@ -539,5 +615,82 @@
                 closeHomeModal();
             }
         });
+
+        function openHeroModal(sort) {
+
+            document.getElementById('heroModal').classList.remove('hidden');
+            document.getElementById('heroModal').classList.add('flex');
+
+            document.getElementById('heroModalTitle').innerHTML = "Tambah Hero";
+
+            document.getElementById('heroForm').action =
+                "{{ route('dashboard.hero.store') }}";
+
+            document.getElementById('hero_method').value = "POST";
+
+            document.getElementById('sort_order').value = sort;
+
+            document.getElementById('hero_title').value = "";
+
+            document.getElementById('hero_description').value = "";
+
+            document.getElementById('hero_preview').src =
+                "https://placehold.co/600x300?text=Preview";
+        }
+
+        function editHero(hero) {
+
+            document.getElementById('heroModal').classList.remove('hidden');
+            document.getElementById('heroModal').classList.add('flex');
+
+            document.getElementById('heroModalTitle').innerHTML = "Edit Hero";
+
+            document.getElementById('heroForm').action =
+                "/dashboard/heroes/" + hero.id;
+
+            document.getElementById('hero_method').value = "PUT";
+
+            document.getElementById('sort_order').value = hero.sort_order;
+
+            document.getElementById('hero_title').value = hero.title;
+
+            document.getElementById('hero_description').value = hero.description ?? "";
+
+            document.getElementById('hero_preview').src =
+                "/storage/" + hero.image;
+        }
+
+        function closeHeroModal() {
+
+            document.getElementById('heroModal').classList.remove('flex');
+            document.getElementById('heroModal').classList.add('hidden');
+        }
+
+        function previewHero(event) {
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                document.getElementById('hero_preview').src = e.target.result;
+            };
+
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        document.getElementById('heroModal').addEventListener('click', function(e) {
+
+            if (e.target === this) {
+
+                closeHeroModal();
+
+            }
+
+        });
+
+        @if (session('openHomeModal'))
+            document.addEventListener('DOMContentLoaded', function() {
+                openHomeModal();
+            });
+        @endif
     </script>
 @endsection

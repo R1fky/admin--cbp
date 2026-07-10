@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class HomeSetting extends Model
+class HomeHero extends Model
 {
     protected $fillable = [
-        'youtube_url',
+        'title',
+        'description',
+        'image',
+        'sort_order'
     ];
 }
