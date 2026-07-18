@@ -41,15 +41,70 @@
         <!-- Header -->
         <div class="border-b p-6 flex items-center justify-between">
             <div>
+                @php
+                    $percentage =
+                        $lomba->max_participants > 0
+                            ? ($lomba->current_participants / $lomba->max_participants) * 100
+                            : 0;
+                @endphp
+
                 <h2 class="text-2xl font-bold text-gray-800">
                     {{ $lomba->title }}
                 </h2>
-                <p class="text-gray-500 mt-1">
-                    Total Peserta :
-                    <span class="font-semibold">
-                        {{ $registrations->total() }}
+
+                <div class="mt-3 flex flex-wrap gap-3">
+
+                    {{-- Jumlah Peserta --}}
+                    <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-semibold">
+                        👥 {{ $lomba->current_participants }} / {{ $lomba->max_participants }} Peserta
                     </span>
-                </p>
+
+                    {{-- Sisa Kuota --}}
+                    <span
+                        class="px-3 py-1 rounded-full font-semibold
+                        {{ $lomba->is_full ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700' }}">
+                        {{ $lomba->is_full ? 'Kuota Penuh' : 'Sisa ' . $lomba->remaining_quota . ' Peserta' }}
+                    </span>
+
+                </div>
+
+                {{-- Progress Bar --}}
+                <div class="mt-5 max-w-xl">
+
+                    <div class="flex justify-between items-center mb-2">
+
+                        <span class="text-sm font-medium text-gray-600">
+                            Progress Kuota
+                        </span>
+
+                        <span class="text-sm font-semibold text-gray-700">
+                            {{ round($percentage) }}%
+                        </span>
+
+                    </div>
+
+                    <div class="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+
+                        <div class="h-full rounded-full transition-all duration-500
+                            @class([
+                                'bg-green-500' => $percentage < 50,
+                                'bg-blue-500' => $percentage >= 50 && $percentage < 80,
+                                'bg-yellow-500' => $percentage >= 80 && $percentage < 100,
+                                'bg-red-500' => $percentage >= 100,
+                            ])"
+                            style="width: {{ min($percentage, 100) }}%">
+                        </div>
+
+                    </div>
+
+                    <div class="mt-2 text-xs text-gray-500">
+                        {{ $lomba->current_participants }}
+                        dari
+                        {{ $lomba->max_participants }}
+                        kuota telah terisi.
+                    </div>
+
+                </div>
             </div>
             <a href="{{ route('lomba.index') }}" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300">
                 ← Kembali
@@ -87,9 +142,9 @@
                         class="bg-gray-200 hover:bg-gray-300 px-6 rounded-lg flex items-center">
                         Reset
                     </a>
-                    
+
                     <a href="{{ route('registration.export', [
-                        'lomba' => $lomba->id,
+                        'lomba' => $lomba,
                         'search' => request('search'),
                         'status' => request('status'),
                     ]) }}"

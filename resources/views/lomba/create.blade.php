@@ -108,6 +108,15 @@
 
                 </div>
 
+                {{-- Max Peserta --}}
+                <div>
+                    <label class="block text-sm font-medium mb-2">
+                        Kuota Peserta
+                    </label>
+
+                    <input type="number" min="1" name="max_participants" value="{{ old('max_participants') }}" class="w-full border rounded-xl px-4 py-3">
+                </div>
+
                 {{-- Release Date --}}
                 <div>
                     <label class="block mb-2 font-medium">

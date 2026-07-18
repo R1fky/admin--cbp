@@ -13,9 +13,13 @@ class LombaRegistration extends Model
 
         'name',
         'email',
+        'domicile',
         'phone',
         'address',
+        
         'file',
+        'link',
+
         'status'
     ];
 

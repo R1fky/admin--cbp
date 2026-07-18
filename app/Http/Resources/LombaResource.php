@@ -27,6 +27,11 @@ class LombaResource extends JsonResource
             'status' => $this->status,
             'status_label' => $this->status_label,
             'status_color' => $this->status_color,
+
+            'current_participants' => $this->current_participants,
+            'max_participants' => $this->max_participants,
+            'remaining_quota' => $this->remaining_quota,
+            'is_full' => $this->is_full,
         ];
     }
 }

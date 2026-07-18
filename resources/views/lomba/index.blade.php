@@ -162,17 +162,18 @@
                                     {{-- Detail --}}
                                     <button
                                         onclick="openDetailModal(
-                                        @js($lomba->title),
-                                        @js($lomba->kategori?->name),
-                                        @js($lomba->description),
-                                        @js($lomba->location_type),
-                                        @js($lomba->location),
-                                        '{{ $lomba->thumbnail ? asset('storage/' . $lomba->thumbnail) : '' }}',
-                                        '{{ $lomba->release_date?->format('d M Y') }}',
-                                        '{{ $lomba->end_date?->format('d M Y') }}',
-                                        @js($lomba->status_label),
-                                        @js($lomba->status_color)
-                                    )"
+                                            @js($lomba->title),
+                                            @js($lomba->kategori?->name),
+                                            @js($lomba->max_participants), // ke-3
+                                            @js($lomba->description),      // ke-4
+                                            @js($lomba->location_type),    // ke-5
+                                            @js($lomba->location),         // ke-6
+                                            '{{ $lomba->thumbnail ? asset('storage/' . $lomba->thumbnail) : '' }}', // ke-7
+                                            '{{ $lomba->release_date?->format('d M Y') }}',
+                                            '{{ $lomba->end_date?->format('d M Y') }}',
+                                            @js($lomba->status_label),
+                                            @js($lomba->status_color)
+                                        )"
                                         title="Detail"
                                         class="w-10 h-10 flex items-center justify-center rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition">
                                         👁️
@@ -191,7 +192,7 @@
                                     </a>
 
                                     {{-- Hapus --}}
-                                    <button onclick="openDeleteModal('{{ $lomba->id }}','{{ $lomba->title }}')"
+                                    <button onclick="openDeleteModal('{{ $lomba->getRouteKey() }}','{{ $lomba->title }}')"
                                         title="Hapus"
                                         class="w-10 h-10 flex items-center justify-center rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition">
                                         🗑️
@@ -255,6 +256,9 @@
                         {{ $lomba->status_label }}
                     </span> --}}
                     <span id="detail_status" class="px-3 py-1 rounded-full text-sm font-semibold">
+                    </span>
+
+                    <span id="max_participants" class="px-3 py-1 rounded-full text-sm font-semibold">
                     </span>
                 </div>
 
@@ -348,6 +352,7 @@
         function openDetailModal(
             title,
             kategori,
+            maxParticipants,
             description,
             locationType,
             location,
@@ -357,31 +362,21 @@
             statusLabel,
             statusColor
         ) {
-            const status = document.getElementById('detail_status');
-
-            status.innerText = statusLabel;
-            status.className =
-                `px-3 py-1 rounded-full text-sm font-semibold ${statusColor}`;
-
             document.getElementById('detail_title').innerText = title;
+            document.getElementById('detail_kategori').innerText = kategori ?? '-';
 
-            document.getElementById('detail_kategori').innerText =
-                kategori ?? '-';
+            document.getElementById('max_participants').innerText =
+                maxParticipants ? `Kuota Peserta : ${maxParticipants} Orang` : 'Tidak dibatasi';
 
-            document.getElementById('detail_description').innerText =
-                description ?? '-';
+            document.getElementById('detail_description').innerText = description ?? '-';
+            document.getElementById('detail_location_type').innerText = locationType ?? '-';
+            document.getElementById('detail_location').innerText = location ?? '-';
+            document.getElementById('detail_release').innerText = releaseDate ?? '-';
+            document.getElementById('detail_end').innerText = endDate ?? '-';
 
-            document.getElementById('detail_location_type').innerText =
-                locationType ?? '-';
-
-            document.getElementById('detail_location').innerText =
-                location ?? '-';
-
-            document.getElementById('detail_release').innerText =
-                releaseDate ?? '-';
-
-            document.getElementById('detail_end').innerText =
-                endDate ?? '-';
+            const status = document.getElementById('detail_status');
+            status.innerText = statusLabel;
+            status.className = `px-3 py-1 rounded-full text-sm font-semibold ${statusColor}`;
 
             const img = document.getElementById('detail_image');
 
@@ -392,8 +387,7 @@
                 img.classList.add('hidden');
             }
 
-            document.getElementById('detailModal')
-                .classList.remove('hidden');
+            document.getElementById('detailModal').classList.remove('hidden');
         }
 
         function closeDetailModal() {

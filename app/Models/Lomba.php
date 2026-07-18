@@ -5,12 +5,14 @@ namespace App\Models;
 
 use App\Models\KategoriLomba;
 use App\Models\LombaRegistration;
+use App\Traits\EncryptsRouteKey;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Lomba extends Model
 {
-    //
+    use EncryptsRouteKey;
+
     protected $fillable = [
         'title',
         'kategori_id',
@@ -19,7 +21,8 @@ class Lomba extends Model
         'release_date',
         'end_date',
         'location_type',
-        'location'
+        'location',
+        'max_participants',
     ];
 
     protected $casts = [
@@ -81,6 +84,31 @@ class Lomba extends Model
         };
     }
 
+    /**
+     * Maximum Peserta
+     */
+
+    public function getCurrentParticipantsAttribute()
+    {
+        return $this->registrations_count
+            ?? $this->registrations()->count();
+    }
+
+
+    public function getRemainingQuotaAttribute()
+    {
+        return max(
+            $this->max_participants - $this->current_participants,
+            0
+        );
+    }
+
+    public function getIsFullAttribute()
+    {
+        return $this->current_participants >= $this->max_participants;
+    }
+
+    // relation to registrasi lomba model
     public function registrations()
     {
         return $this->hasMany(LombaRegistration::class);

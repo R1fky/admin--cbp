@@ -11,7 +11,7 @@
             Edit Engagement
         </h2>
 
-        <form action="{{ route('lomba.update', $lomba->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('lomba.update', $lomba) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -169,6 +169,16 @@
                             {{ $message }}
                         </p>
                     @enderror
+                </div>
+
+                {{-- Kuota Peserta --}}
+                <div>
+                    <label class="block text-sm font-medium mb-2">
+                        Kuota Peserta
+                    </label>
+
+                    <input type="number" min="1" name="max_participants"
+                        value="{{ old('max_participants', $lomba->max_participants) }}" class="w-full border rounded-xl px-4 py-3">
                 </div>
 
                 {{-- Description --}}

@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\LombaRegistration;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
+
+use Illuminate\Validation\Rule;
+
 class LombaRegistrationsController extends Controller
 {
     public function store(Request $request)
@@ -17,20 +22,38 @@ class LombaRegistrationsController extends Controller
             [
                 'lomba_id' => 'required|integer',
                 'name'     => 'required|max:255',
-                'email'    => 'required|email',
+                'domicile' => 'required|max:255',
+                'email' => [
+                    'required',
+                    'email',
+                    Rule::unique('lomba_registrations')
+                        ->where(fn($query) => $query->where('lomba_id', $request->lomba_id)),
+                ],
                 'phone'    => 'required|max:20',
                 'address'  => 'required',
+
                 'file'     => 'nullable|file|mimes:pdf,doc,docx|max:10240',
+
+                'link'     => 'nullable|url',
             ],
             [
                 'lomba_id.required' => 'Lomba harus dipilih.',
+
                 'name.required'     => 'Nama wajib diisi.',
+
+                'domicile.required' => 'Domisili wajib diisi.',
+
                 'email.required'    => 'Email wajib diisi.',
                 'email.email'       => 'Format email tidak valid.',
+
                 'phone.required'    => 'Nomor HP wajib diisi.',
+
                 'address.required'  => 'Alamat wajib diisi.',
+
                 'file.mimes'        => 'File harus PDF, DOC, atau DOCX.',
-                'file.max'          => 'Ukuran file maksimal 5 MB.',
+                'file.max'          => 'Ukuran file maksimal 10 MB.',
+
+                'link.url'          => 'Link tidak valid.',
             ]
         );
 
@@ -48,7 +71,8 @@ class LombaRegistrationsController extends Controller
     | Cek lomba
     |--------------------------------------------------------------------------
     */
-        $lomba = Lomba::find($validated['lomba_id']);
+        $lomba = Lomba::withCount('registrations')
+            ->find($validated['lomba_id']);
 
         if (!$lomba) {
             return response()->json([
@@ -78,44 +102,62 @@ class LombaRegistrationsController extends Controller
             ], 400);
         }
 
+
         /*
     |--------------------------------------------------------------------------
     | Cek apakah email sudah pernah mendaftar
     |--------------------------------------------------------------------------
     */
-        $alreadyRegistered = LombaRegistration::where('lomba_id', $validated['lomba_id'])
-            ->where('email', $validated['email'])
-            ->exists();
+        // $alreadyRegistered = LombaRegistration::where('lomba_id', $validated['lomba_id'])
+        //     ->where('email', $validated['email'])
+        //     ->exists();
 
-        if ($alreadyRegistered) {
+        // if ($alreadyRegistered) {
+        //     return response()->json([
+        //         'message' => 'Email ini sudah terdaftar pada lomba tersebut.'
+        //     ], 409);
+        // }
+
+        try {
+
+            $registration = DB::transaction(function () use ($validated, $request) {
+
+                $lomba = Lomba::where('id', $validated['lomba_id'])
+                    ->lockForUpdate()
+                    ->first();
+
+                $currentParticipants = $lomba->registrations()->count();
+
+                if ($currentParticipants >= $lomba->max_participants) {
+                    throw ValidationException::withMessages([
+                        'quota' => ['Kuota peserta sudah penuh.']
+                    ]);
+                }
+
+                if ($request->hasFile('file')) {
+                    $validated['file'] = $request
+                        ->file('file')
+                        ->store('lomba-files', 'public');
+                }
+
+                return LombaRegistration::create($validated);
+            });
+        } catch (ValidationException $e) {
+
             return response()->json([
-                'message' => 'Email ini sudah terdaftar pada lomba tersebut.'
+                'message' => 'Kuota peserta sudah penuh.',
+                'errors' => $e->errors(),
             ], 409);
         }
 
-        /*
-    |--------------------------------------------------------------------------
-    | Upload File
-    |--------------------------------------------------------------------------
-    */
-
-        if ($request->hasFile('file')) {
-            $validated['file'] = $request
-                ->file('file')
-                ->store('lomba-files', 'public');
-        }
-
-        /*
-    |--------------------------------------------------------------------------
-    | Simpan
-    |--------------------------------------------------------------------------
-    */
-
-        $registration = LombaRegistration::create($validated);
-
         return response()->json([
             'message' => 'Pendaftaran berhasil.',
-            'data' => $registration
+            'data' => [
+                ...$registration->toArray(),
+                'file_url' => $registration->file
+                    ? asset('storage/' . $registration->file)
+                    : null,
+            ]
         ], 201);
     }
 }

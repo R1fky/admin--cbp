@@ -18,16 +18,17 @@ class LombasController extends Controller
      */
     public function index()
     {
-        return LombaResource::collection(
-            Lomba::latest()->get()
-        );
+        $lombas = Lomba::withCount('registrations')
+            ->latest()
+            ->get();
+
+        return LombaResource::collection($lombas);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Lomba $lomba)
     {
+        $lomba->loadCount('registrations');
+
         return new LombaResource($lomba);
     }
 }

@@ -64,6 +64,7 @@ class LombaController extends Controller
                 'end_date' => 'required|date|after_or_equal:release_date',
                 'location_type' => 'required|in:online,offline',
                 'location' => 'required|string|max:255',
+                'max_participants' => 'required|integer|min:1',
                 'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:10240'
             ],
             [
@@ -87,6 +88,8 @@ class LombaController extends Controller
 
                 'location.required' => 'Lokasi wajib diisi.',
 
+                'max_participants.required' => 'Max Peserta wajib diisi.',
+
                 'thumbnail.image' => 'File harus berupa gambar.',
                 'thumbnail.mimes' => 'Format gambar harus JPG, JPEG atau PNG.',
                 'thumbnail.max' => 'Ukuran gambar maksimal 2 MB.',
@@ -109,7 +112,8 @@ class LombaController extends Controller
             'release_date' => $request->release_date,
             'end_date' => $request->end_date,
             'location_type' => $request->location_type,
-            'location' => $request->location
+            'location' => $request->location,
+            'max_participants' => $request->max_participants,
         ]);
 
         return redirect()
@@ -142,6 +146,7 @@ class LombaController extends Controller
                 'end_date' => 'required|date|after_or_equal:release_date',
                 'location_type' => 'required|in:online,offline',
                 'location' => 'required|string|max:255',
+                'max_participants' => 'required|integer|min:1',
                 'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:10240',
             ],
             [
@@ -164,6 +169,8 @@ class LombaController extends Controller
                 'location_type.in' => 'Tipe lokasi tidak valid.',
 
                 'location.required' => 'Lokasi wajib diisi.',
+
+                'max_participants.required' => 'Max Peserta wajib diisi.',
 
                 'thumbnail.image' => 'File harus berupa gambar.',
                 'thumbnail.mimes' => 'Format gambar harus JPG, JPEG atau PNG.',
@@ -198,6 +205,7 @@ class LombaController extends Controller
             'end_date' => $request->end_date,
             'location_type' => $request->location_type,
             'location' => $request->location,
+            'max_participants' => $request->max_participants,
         ]);
 
         return redirect()

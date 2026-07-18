@@ -168,14 +168,14 @@
                                         Detail
                                     </button>
                                     {{-- edit edukasi --}}
-                                    <a href="{{ route('edukasi.edit', $edukasi->id) }}"
+                                    <a href="{{ route('edukasi.edit', $edukasi) }}"
                                         class="bg-blue-100 text-blue-700 px-3 py-2 rounded-lg hover:bg-blue-200">
                                         Edit
                                     </a>
                                     {{-- hapus edukasi --}}
                                     <button
                                         onclick="openDeleteModal(
-                                            '{{ $edukasi->id }}',
+                                            '{{ $edukasi->getRouteKey() }}',
                                             '{{ $edukasi->judul }}'
                                         )"
                                         class="bg-red-100 text-red-700 px-3 py-2 rounded-lg hover:bg-red-200">

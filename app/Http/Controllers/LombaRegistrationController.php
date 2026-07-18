@@ -13,6 +13,8 @@ class LombaRegistrationController extends Controller
 
     public function index(Request $request, Lomba $lomba)
     {
+        $lomba->loadCount('registrations');
+        
         $query = $lomba->registrations();
 
         // Search nama atau email
