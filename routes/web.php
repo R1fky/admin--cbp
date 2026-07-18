@@ -7,8 +7,10 @@ use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LombaRegistrationController;
 use App\Http\Controllers\EdukasiController;
+use App\Http\Controllers\EdukasiVideoController;
 use App\Http\Controllers\HomeHeroController;
 use App\Http\Controllers\ProfileController;
+
 
 Route::get('/', function () {
     return redirect('/login');
@@ -81,6 +83,7 @@ Route::middleware('auth')->group(function () {
 
     //edukasi route
     Route::resource('edukasi', EdukasiController::class);
+    Route::resource('edukasi-video', EdukasiVideoController::class);
 
     // edit profile
     Route::get('/profile', [ProfileController::class, 'edit'])

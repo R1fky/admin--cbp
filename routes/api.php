@@ -1,11 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\LombasController;
 use App\Http\Controllers\Api\BeritasController;
-use App\Http\Controllers\Api\LombaRegistrationsController;
 use App\Http\Controllers\Api\EdukasisController;
+use App\Http\Controllers\Api\EdukasiVideosController;
 use App\Http\Controllers\Api\HomeSettingsController;
+use App\Http\Controllers\Api\LombaRegistrationsController;
+use App\Http\Controllers\Api\LombasController;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')
     ->name('api.')
@@ -36,6 +37,12 @@ Route::prefix('v1')
             'edukasis/{edukasi}/pdf',
             [EdukasisController::class, 'pdf']
         )->name('edukasis.pdf');
+
+        Route::apiResource('edukasi-videos', EdukasiVideosController::class)
+            ->only([
+                'index',
+                'show'
+            ]);
 
         Route::post(
             'lomba-registrations',

@@ -43,7 +43,6 @@ class EdukasiController extends Controller
         $validated = $request->validate([
             'judul' => 'required|string|max:255|unique:edukasis,judul',
             'deskripsi' => 'required|string',
-            'content' => 'required|string',
             'file' => 'nullable|mimes:jpg,jpeg,png,webp,pdf|max:10240',
             'link' => 'nullable|url|max:255',
         ]);
@@ -77,7 +76,6 @@ class EdukasiController extends Controller
                 Rule::unique('edukasis', 'judul')->ignore($edukasi->id),
             ],
             'deskripsi' => 'required|string',
-            'content' => 'required|string',
             'file' => 'nullable|mimes:jpg,jpeg,png,webp,pdf|max:10240',
             'link' => 'nullable|url|max:2048',
         ], [

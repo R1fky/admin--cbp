@@ -43,19 +43,30 @@
         {{-- Header --}}
         <div class="bg-white rounded-xl shadow-sm border-l-4 border-[#CF1A25] p-6">
             <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+
                 <div>
                     <h3 class="text-2xl font-bold text-[#1C3281]">
                         Kelola Education
                     </h3>
 
                     <p class="text-gray-500 mt-1">
-                        Kelola seluruh data Education dan kompetisi Bank Indonesia.
+                        Kelola seluruh data Education Bank Indonesia.
                     </p>
                 </div>
-                <a href="{{ route('edukasi.create') }}"
-                    class="bg-[#1C3281] hover:bg-blue-900 text-white px-4 py-2 md:px-5 md:py-3 rounded-lg font-semibold transition">
-                    + Tambah edukasi
-                </a>
+
+                <div class="flex gap-3">
+
+                    <a href="{{ route('edukasi-video.index') }}"
+                        class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-3 rounded-lg font-semibold transition">
+                        🎥 Kelola Video
+                    </a>
+
+                    <a href="{{ route('edukasi.create') }}"
+                        class="bg-[#1C3281] hover:bg-blue-900 text-white px-5 py-3 rounded-lg font-semibold transition">
+                        + Tambah Edukasi
+                    </a>
+
+                </div>
 
             </div>
 
@@ -160,7 +171,6 @@
                                         onclick="openDetailModal(
                                             @js($edukasi->judul),
                                             @js($edukasi->deskripsi),
-                                            @js($edukasi->content),
                                             @js($edukasi->link),
                                             @js($edukasi->file)
                                         )"
@@ -203,8 +213,14 @@
     </div>
 
     {{-- Modal Detail --}}
-    <div id="detailModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl w-full max-w-3xl shadow-xl">
+    <div id="detailModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+
+        <div
+            class="bg-white rounded-2xl shadow-2xl
+               w-full max-w-2xl
+               max-h-[90vh]
+               overflow-hidden">
+
             <div class="border-b p-5 flex justify-between items-center">
                 <h3 class="text-2xl font-bold text-[#1C3281]">
                     Detail Edukasi
@@ -213,7 +229,7 @@
                     ✕
                 </button>
             </div>
-            <div class="p-6">
+            <div class="p-6 overflow-y-auto max-h-[calc(90vh-80px)]">
                 <div id="previewContainer" class="mb-5"></div>
                 <h2 id="detail_title" class="text-2xl font-bold text-[#1C3281] mb-4">
                 </h2>
@@ -224,20 +240,22 @@
                     <p id="detail_deskripsi" class="text-gray-700 leading-7">
                     </p>
                 </div>
-                <div class="mb-5">
-                    <h4 class="font-semibold mb-2">
-                        Content
+                {{-- Video / Link --}}
+                <div id="videoSection" class="hidden mt-6">
+
+                    <h4 class="font-semibold mb-3">
+                        Video / Link
                     </h4>
 
-                    <div id="detail_content" class="prose max-w-none text-gray-700 leading-7 overflow-y-auto max-h-[450px]">
-                    </div>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-2">
-                        Link
-                    </h4>
-                    <a id="detail_link" target="_blank" class="text-blue-600 hover:underline break-all">
+                    <div id="videoPreview"></div>
+
+                    <a id="detail_link" target="_blank"
+                        class="inline-flex items-center gap-2 mt-4 text-blue-600 hover:text-blue-700 hover:underline break-all">
+
+                        🔗 Buka Link
+
                     </a>
+
                 </div>
             </div>
         </div>
@@ -271,11 +289,60 @@
     {{-- End Modal Hapus edukasi --}}
 
     <script>
+        // helper
+        function convertToEmbed(link) {
+
+            if (!link) return null;
+
+            // Youtube
+            if (link.includes("youtube.com/watch?v=")) {
+
+                const id = new URL(link).searchParams.get("v");
+
+                return id ?
+                    `https://www.youtube.com/embed/${id}` :
+                    null;
+
+            }
+
+            if (link.includes("youtu.be/")) {
+
+                const id = link.split("youtu.be/")[1].split("?")[0];
+
+                return `https://www.youtube.com/embed/${id}`;
+
+            }
+
+            // Vimeo
+            if (link.includes("vimeo.com/")) {
+
+                const id = link.split("/").pop();
+
+                return `https://player.vimeo.com/video/${id}`;
+
+            }
+
+            // Google Drive
+            if (link.includes("drive.google.com")) {
+
+                const match = link.match(/\/d\/(.*?)\//);
+
+                if (match) {
+
+                    return `https://drive.google.com/file/d/${match[1]}/preview`;
+
+                }
+
+            }
+
+            return null;
+
+        }
+
         // detail modal
         function openDetailModal(
             judul,
             deskripsi,
-            content,
             link,
             file
         ) {
@@ -285,20 +352,66 @@
             document.getElementById('detail_deskripsi').innerText =
                 deskripsi ?? '-';
 
-            document.getElementById('detail_content').innerHTML = content ?? '-';
+            const videoSection = document.getElementById("videoSection");
+            const videoPreview = document.getElementById("videoPreview");
+            const linkElement = document.getElementById("detail_link");
 
-            const linkElement = document.getElementById('detail_link');
+            videoSection.classList.add("hidden");
+            videoPreview.innerHTML = "";
 
             if (link) {
 
+                videoSection.classList.remove("hidden");
+
                 linkElement.href = link;
-                linkElement.innerText = link;
-                linkElement.classList.remove('hidden');
+                linkElement.innerHTML = "🔗 Buka Link Asli";
 
-            } else {
+                const embed = convertToEmbed(link);
 
-                linkElement.innerText = '-';
-                linkElement.removeAttribute('href');
+                if (embed) {
+
+                    videoPreview.innerHTML = `
+                        <div class="rounded-xl overflow-hidden border shadow">
+
+                            <iframe
+                                src="${embed}"
+                                class="w-full h-[280px] md:h-[320px]"
+                                allowfullscreen>
+                            </iframe>
+
+                        </div>
+                    `;
+
+                } else {
+
+                    videoPreview.innerHTML = `
+            <div class="rounded-xl border border-yellow-200 bg-yellow-50 p-5">
+
+                <div class="flex items-start gap-3">
+
+                    <div class="text-2xl">
+                        🔗
+                    </div>
+
+                    <div>
+
+                        <p class="font-semibold text-yellow-700">
+                            Preview tidak tersedia
+                        </p>
+
+                        <p class="text-sm text-yellow-600 mt-1">
+                            Link ini tidak mendukung preview.
+                            Silakan klik tombol di bawah untuk membuka halaman.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+
+                }
 
             }
 
@@ -332,7 +445,7 @@
             }
 
             document
-                .getElementById('detailModal')
+                .getElementById('detailModal')x
                 .classList.remove('hidden');
         }
 
