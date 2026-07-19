@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class HomeSetting extends Model
 {
     protected $fillable = [
-        'youtube_url',
+        'running_text',
     ];
 }

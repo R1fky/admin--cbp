@@ -46,15 +46,17 @@ Route::middleware('auth')->group(function () {
         [HomeHeroController::class, 'destroy']
     )->name('dashboard.hero.destroy');
 
+    // runing text
     Route::post(
-        '/dashboard/youtube',
-        [HomeHeroController::class, 'storeYoutube']
-    )->name('dashboard.youtube.store');
+        '/dashboard/running-text',
+        [HomeHeroController::class, 'storeRunningText']
+    )->name('dashboard.runningtext.store');
 
-    // Route::put(
-    //     '/dashboard/youtube',
-    //     [HomeHeroController::class, 'updateYoutube']
-    // )->name('dashboard.youtube.update');
+    Route::delete(
+        '/dashboard/running-text/{runningText}',
+        [HomeHeroController::class, 'destroyRunningText']
+    )->name('dashboard.runningtext.destroy');
+    // ennd running text 
     // End Hero
 
     Route::resource('lomba', LombaController::class);

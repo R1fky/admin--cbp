@@ -6,78 +6,78 @@
 @section('content')
     @if (session('success'))
         <div id="toastSuccess"
-            class="fixed top-5 right-5 z-50 bg-white border-l-4 border-green-500 shadow-xl rounded-xl px-5 py-4 min-w-[320px]">
-            <div class="flex items-start gap-3">
-                <div class="bg-green-100 p-2 rounded-full">
+            class="fixed top-6 right-6 z-[9999] translate-x-[120%]
+    rounded-2xl bg-green-500 text-white shadow-2xl px-6 py-5">
+
+            <div class="flex items-start gap-4">
+
+                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white/20 text-xl">
+
                     ✅
+
                 </div>
-                <div class="flex-1">
-                    <h4 class="font-semibold text-gray-800">
+
+                <div>
+
+                    <h3 class="font-bold">
                         Berhasil
-                    </h4>
-                    <p class="text-gray-600 text-sm">
+                    </h3>
+
+                    <p class="text-sm text-green-100 mt-1">
                         {{ session('success') }}
                     </p>
+
                 </div>
-                <button onclick="document.getElementById('toastSuccess').remove()" class="text-gray-400 hover:text-gray-600">
-                    ✕
+
+                <button onclick="closeToast('toastSuccess')" class="ml-3 text-xl hover:opacity-70">
+
+                    ×
+
                 </button>
+
             </div>
+
         </div>
-        <script>
-            setTimeout(() => {
-                const toast = document.getElementById('toastSuccess');
-
-                if (toast) {
-                    toast.style.transition = 'all .5s ease';
-                    toast.style.transform = 'translateX(100%)';
-                    toast.style.opacity = '0';
-
-                    setTimeout(() => toast.remove(), 500);
-                }
-            }, 4000);
-        </script>
     @endif
 
     @if ($errors->any())
         <div id="toastError"
-            class="fixed top-5 right-5 z-50 bg-white border-l-4 border-red-500 shadow-xl rounded-xl px-5 py-4 min-w-[320px] max-w-md">
+            class="fixed top-6 right-6 z-[9999] translate-x-[120%]
+    rounded-2xl bg-red-500 text-white shadow-2xl px-6 py-5">
 
-            <div class="flex items-start gap-3">
+            <div class="flex items-start gap-4">
 
-                <div class="bg-red-100 p-2 rounded-full">
+                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white/20 text-xl">
+
                     ❌
+
                 </div>
 
-                <div class="flex-1">
-                    <h4 class="font-semibold text-gray-800">
+                <div>
+
+                    <h3 class="font-bold">
                         Terjadi Kesalahan
-                    </h4>
-                    <ul class="text-gray-600 text-sm mt-1 list-disc pl-4">
+                    </h3>
+
+                    <ul class="mt-1 text-sm text-red-100 list-disc pl-5">
+
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
+
                     </ul>
+
                 </div>
-                <button onclick="document.getElementById('toastError').remove()" class="text-gray-400 hover:text-gray-600">
-                    ✕
+
+                <button onclick="closeToast('toastError')" class="ml-3 text-xl hover:opacity-70">
+
+                    ×
+
                 </button>
+
             </div>
+
         </div>
-
-        <script>
-            setTimeout(() => {
-                const toast = document.getElementById('toastError');
-
-                if (toast) {
-                    toast.style.transition = 'all .5s ease';
-                    toast.style.transform = 'translateX(100%)';
-                    toast.style.opacity = '0';
-
-                    setTimeout(() => toast.remove(), 500);
-                }
-            }, 5000);
-        </script>
     @endif
 
     {{-- Header --}}
@@ -387,96 +387,243 @@
     <div id="homeModal" class="fixed inset-0 hidden items-center justify-center bg-black/60 z-50 p-6">
         <div class="bg-white rounded-2xl w-full max-w-7xl max-h-[92vh] overflow-y-auto shadow-2xl">
             {{-- Header --}}
-            <div class="flex justify-between items-center border-b p-6">
+            <div
+                class="bg-gradient-to-r from-[#1C3281] to-blue-700 text-white px-8 py-6 rounded-t-2xl flex items-center justify-between">
+
                 <div>
-                    <h2 class="text-2xl font-bold text-[#1C3281]">
-                        Pengaturan Home
+                    <h2 class="text-2xl font-bold">
+                        ⚙️ Pengaturan Halaman Home
                     </h2>
-                    <p class="text-gray-500 text-sm mt-1">
-                        Maksimal 3 Hero Banner
+
+                    <p class="text-blue-100 mt-1 text-sm">
+                        Kelola Hero Banner dan Running Text Website
                     </p>
                 </div>
-                <button onclick="closeHomeModal()" class="text-3xl hover:text-red-500">
-                    &times;
+
+                <button onclick="closeHomeModal()"
+                    class="w-10 h-10 rounded-full bg-white/20 hover:bg-red-500 transition flex items-center justify-center text-2xl">
+                    ×
                 </button>
+
             </div>
-            <div class="p-6">
-                <h3 class="text-xl font-bold mb-5">
-                    Hero Banner
-                </h3>
-                <div class="grid md:grid-cols-3 gap-6">
-                    @for ($i = 1; $i <= 3; $i++)
-                        @php
-                            $hero = $heroes->firstWhere('sort_order', $i);
-                        @endphp
-                        <div class="rounded-xl border shadow">
-                            <img src="{{ $hero ? asset('storage/' . $hero->image) : 'https://placehold.co/600x350?text=Hero+' . $i }}"
-                                class="w-full h-44 object-cover">
-                            <div class="p-5">
-                                <h4 class="font-bold text-lg">
-                                    Hero {{ $i }}
-                                </h4>
-                                @if ($hero)
-                                    <p class="font-semibold mt-3">
-                                        {{ $hero->title }}
-                                    </p>
-                                    <p class="text-sm text-gray-500 mt-1 line-clamp-3">
-                                        {{ $hero->description }}
-                                    </p>
-                                @else
-                                    <p class="text-gray-400 mt-3">
-                                        Belum ada Hero.
-                                    </p>
-                                @endif
-                                <div class="flex gap-2 mt-5">
+            <div class="p-8">
 
-                                    @if ($hero)
-                                        <button onclick='editHero(@json($hero))'
-                                            class="flex-1 flex items-center justify-center gap-2 bg-[#1C3281] hover:bg-[#16296a] text-white rounded-lg py-2 transition">
-                                            ✏️
-                                            <span>Edit</span>
-                                        </button>
-                                        <form action="{{ route('dashboard.hero.destroy', $hero) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" onclick="return confirm('Hapus Hero?')"
-                                                class="w-11 h-11 flex items-center justify-center rounded-lg bg-red-500 hover:bg-red-600 text-white transition">
-                                                🗑️
-                                            </button>
-                                        </form>
-                                    @else
-                                        <button onclick="openHeroModal({{ $i }})"
-                                            class="flex-1 flex items-center justify-center gap-2 bg-[#1C3281] hover:bg-[#16296a] text-white rounded-lg py-2 transition">
-                                            ＋
-                                            <span>Tambah</span>
-                                        </button>
-                                    @endif
+                <div class="grid xl:grid-cols-5 gap-8">
+
+                    {{-- ========================================= --}}
+                    {{-- HERO BANNER --}}
+                    {{-- ========================================= --}}
+                    <div class="xl:col-span-2">
+
+                        <div class="bg-gray-50 rounded-2xl border p-6">
+
+                            <div class="flex items-center justify-between mb-6">
+
+                                <div>
+
+                                    <h3 class="text-xl font-bold text-[#1C3281]">
+                                        Hero Banner
+                                    </h3>
+
+                                    <p class="text-sm text-gray-500">
+                                        Maksimal 3 Hero Banner
+                                    </p>
+
                                 </div>
+
                             </div>
+
+                            <div class="space-y-6">
+
+                                @for ($i = 1; $i <= 3; $i++)
+                                    @php
+                                        $hero = $heroes->firstWhere('sort_order', $i);
+                                    @endphp
+
+                                    <div class="overflow-hidden rounded-xl border bg-white shadow-sm">
+
+                                        <img src="{{ $hero ? asset('storage/' . $hero->image) : 'https://placehold.co/700x350?text=Hero+' . $i }}"
+                                            class="w-full h-44 object-cover">
+
+                                        <div class="p-5">
+
+                                            <h4 class="font-bold text-lg">
+                                                Hero {{ $i }}
+                                            </h4>
+
+                                            @if ($hero)
+                                                <p class="font-semibold mt-3">
+                                                    {{ $hero->title }}
+                                                </p>
+
+                                                <p class="text-sm text-gray-500 mt-2 line-clamp-3">
+                                                    {{ $hero->description }}
+                                                </p>
+                                            @else
+                                                <p class="text-gray-400 mt-3">
+                                                    Belum ada Hero
+                                                </p>
+                                            @endif
+
+                                            <div class="flex gap-2 mt-5">
+
+                                                @if ($hero)
+                                                    <button onclick='editHero(@json($hero))'
+                                                        class="flex-1 rounded-xl bg-[#1C3281] py-2 text-white hover:bg-blue-900">
+
+                                                        ✏️ Edit
+
+                                                    </button>
+
+                                                    <form action="{{ route('dashboard.hero.destroy', $hero) }}"
+                                                        method="POST">
+
+                                                        @csrf
+                                                        @method('DELETE')
+
+                                                        <button onclick="return confirm('Hapus Hero?')"
+                                                            class="w-11 h-11 rounded-xl bg-red-500 text-white hover:bg-red-600">
+
+                                                            🗑️
+
+                                                        </button>
+
+                                                    </form>
+                                                @else
+                                                    <button onclick="openHeroModal({{ $i }})"
+                                                        class="w-full rounded-xl bg-[#1C3281] py-2 text-white hover:bg-blue-900">
+
+                                                        + Tambah Hero
+
+                                                    </button>
+                                                @endif
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                @endfor
+
+                            </div>
+
                         </div>
-                    @endfor
-                </div>
 
-                <hr class="my-10">
-
-                <form action="{{ route('dashboard.youtube.store') }}" method="POST">
-
-                    @csrf
-
-                    <label class="font-semibold">
-                        Link Youtube
-                    </label>
-
-                    <input type="url" name="youtube_url" value="{{ old('youtube_url') }}"
-                        class="mt-2 w-full border rounded-lg px-4 py-3">
-
-                    <div class="text-right mt-5">
-                        <button class="bg-[#1C3281] text-white px-5 py-3 rounded-lg">
-                            Simpan
-                        </button>
                     </div>
 
-                </form>
+                    {{-- ========================================= --}}
+                    {{-- RUNNING TEXT --}}
+                    {{-- ========================================= --}}
+                    <div class="xl:col-span-3">
+
+                        <div class="bg-gray-50 rounded-2xl border p-6">
+
+                            <h3 class="text-xl font-bold text-[#1C3281]">
+                                Running Text
+                            </h3>
+
+                            <p class="text-gray-500 text-sm mt-1">
+                                Tambahkan teks berjalan yang akan tampil pada website.
+                            </p>
+
+                            <form action="{{ route('dashboard.runningtext.store') }}" method="POST" class="mt-6">
+
+                                @csrf
+
+                                <textarea name="running_text" rows="3" placeholder="Masukkan Running Text..."
+                                    class="w-full rounded-xl border px-4 py-3 resize-none focus:ring-2 focus:ring-[#1C3281]">{{ old('running_text') }}</textarea>
+
+                                <div class="mt-4 flex justify-end">
+
+                                    <button class="rounded-xl bg-[#1C3281] px-6 py-3 text-white hover:bg-blue-900">
+
+                                        Simpan Running Text
+
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                        {{-- LIST --}}
+                        <div class="bg-white rounded-2xl border shadow-sm mt-8">
+
+                            <div class="flex items-center justify-between p-5 border-b">
+
+                                <h3 class="font-bold text-[#1C3281]">
+                                    Daftar Running Text
+                                </h3>
+
+                                <span class="rounded-full bg-blue-100 px-4 py-1 text-sm font-semibold text-blue-700">
+
+                                    {{ $setting->count() }} Data
+
+                                </span>
+
+                            </div>
+
+                            <div class="max-h-[450px] overflow-y-auto p-5 space-y-4">
+
+                                @forelse($setting as $item)
+                                    <div class="rounded-xl border bg-gray-50 hover:bg-white hover:shadow transition p-5">
+
+                                        <div class="flex justify-between gap-5">
+
+                                            <div class="flex-1">
+
+                                                <p class="leading-7 text-gray-700">
+
+                                                    {{ $item->running_text }}
+
+                                                </p>
+
+                                                <div class="text-xs text-gray-400 mt-3">
+
+                                                    {{ $item->created_at->format('d M Y H:i') }}
+
+                                                </div>
+
+                                            </div>
+
+                                            <form action="{{ route('dashboard.runningtext.destroy', $item->id) }}"
+                                                method="POST"
+                                                onsubmit="return confirm('Yakin ingin menghapus running text ini?')">
+
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button
+                                                    class="rounded-xl bg-red-500 hover:bg-red-600 text-white px-4 py-2">
+
+                                                    🗑️ Hapus
+
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+
+                                @empty
+
+                                    <div class="py-14 text-center text-gray-400">
+
+                                        Belum ada Running Text.
+
+                                    </div>
+                                @endforelse
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>
@@ -686,6 +833,50 @@
             }
 
         });
+
+        function showToast(id) {
+
+            const toast = document.getElementById(id);
+
+            if (!toast) return;
+
+            toast.style.transition = "all .45s ease";
+
+            setTimeout(() => {
+                toast.style.transform = "translateX(-120%)";
+            }, 100);
+
+            setTimeout(() => {
+                toast.style.transform = "translateX(0)";
+            }, 4000);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 4500);
+
+        }
+
+        function closeToast(id) {
+
+            const toast = document.getElementById(id);
+
+            if (!toast) return;
+
+            toast.style.transform = "translateX(120%)";
+
+            toast.style.opacity = "0";
+
+            setTimeout(() => toast.remove(), 300);
+
+        }
+
+        @if (session('success'))
+            showToast("toastSuccess");
+        @endif
+
+        @if ($errors->any())
+            showToast("toastError");
+        @endif
 
         @if (session('openHomeModal'))
             document.addEventListener('DOMContentLoaded', function() {

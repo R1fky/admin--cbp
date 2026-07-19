@@ -117,16 +117,25 @@ class HomeHeroController extends Controller
     //     );
     // }
 
-    public function storeYoutube(Request $request)
+    public function storeRunningText(Request $request)
     {
         $validated = $request->validate([
-            'youtube_url' => 'nullable|url'
+            'running_text' => 'nullable|string|max:500',
         ]);
 
         HomeSetting::create($validated);
 
         return back()
-            ->with('success', 'Link Youtube berhasil ditambahkan.')
+            ->with('success', 'Running Text berhasil ditambahkan.')
+            ->with('openHomeModal', true);
+    }
+
+    public function destroyRunningText(HomeSetting $runningText)
+    {
+        $runningText->delete();
+
+        return back()
+            ->with('success', 'Running Text berhasil dihapus.')
             ->with('openHomeModal', true);
     }
 }

@@ -3,7 +3,8 @@
 use App\Http\Controllers\Api\BeritasController;
 use App\Http\Controllers\Api\EdukasisController;
 use App\Http\Controllers\Api\EdukasiVideosController;
-use App\Http\Controllers\Api\HomeSettingsController;
+use App\Http\Controllers\Api\HomeHeroController;
+use App\Http\Controllers\Api\RunningTextController;
 use App\Http\Controllers\Api\LombaRegistrationsController;
 use App\Http\Controllers\Api\LombasController;
 use Illuminate\Support\Facades\Route;
@@ -29,10 +30,16 @@ Route::prefix('v1')
                 'index',
                 'show'
             ]);
-        Route::apiResource('home-settings', HomeSettingsController::class)
-            ->only([
-                'index',
-            ]);
+
+        Route::get(
+            'home-heroes',
+            [HomeHeroController::class, 'index']
+        );
+
+        Route::get(
+            'running-texts',
+            [RunningTextController::class, 'index']
+        );
         Route::get(
             'edukasis/{edukasi}/pdf',
             [EdukasisController::class, 'pdf']
