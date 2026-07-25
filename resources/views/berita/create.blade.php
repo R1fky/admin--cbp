@@ -4,207 +4,142 @@
 @section('page-title', 'Tambah Entertainment')
 
 @section('content')
+    <div class="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden max-w-4xl mx-auto">
+        {{-- Form Header --}}
+        <div class="bg-gradient-to-r from-[#0B1A40] to-[#1E3A8A] px-6 py-5 text-white">
+            <h3 class="text-base font-bold tracking-tight">Tulis Artikel & Berita Baru</h3>
+            <p class="text-slate-300 text-xs mt-0.5">Publikasikan konten berita, artikel edukatif, atau materi entertainment di portal CBP Rupiah.</p>
+        </div>
 
-    <div class="bg-white rounded-xl shadow-sm p-6">
-
-        <h2 class="text-2xl font-bold text-[#1C3281] mb-6">
-            Tambah Entertainment
-        </h2>
-
-        <form action="{{ route('berita.store') }}" method="POST" enctype="multipart/form-data">
-
+        <form action="{{ route('berita.store') }}" method="POST" enctype="multipart/form-data" class="p-6 md:p-8 space-y-6">
             @csrf
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {{-- Judul --}}
                 <div class="md:col-span-2">
-
-                    <label class="block mb-2 font-medium">
-                        Judul Berita
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                        Judul Berita / Artikel
                     </label>
-
-                    <input type="text" name="title" value="{{ old('title') }}"
-                        class="w-full border rounded-lg px-4 py-3 @error('title') border-red-500 @enderror">
-
+                    <input type="text" name="title" value="{{ old('title') }}" placeholder="Contoh: Cinta Bangga Paham Rupiah Hadir di Festival Digifest"
+                        class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1A40]/30 @error('title') border-rose-400 focus:ring-rose-200/30 @enderror">
                     @error('title')
-                        <p class="text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
+                        <p class="text-rose-500 text-xs mt-1.5 font-medium">{{ $message }}</p>
                     @enderror
-
                 </div>
 
                 {{-- Kategori --}}
                 <div>
-
-                    <label class="block mb-2 font-medium">
-                        Kategori
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                        Kategori Artikel
                     </label>
-
                     <select name="kategori_id"
-                        class="w-full border rounded-lg px-4 py-3 @error('kategori_id') border-red-500 @enderror">
-
-                        <option value="">
-                            Pilih Kategori
-                        </option>
-
+                        class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1A40]/30 bg-white @error('kategori_id') border-rose-400 focus:ring-rose-200/30 @enderror">
+                        <option value="">Pilih Kategori</option>
                         @foreach ($kategoris as $kategori)
                             <option value="{{ $kategori->id }}" {{ old('kategori_id') == $kategori->id ? 'selected' : '' }}>
-
                                 {{ $kategori->name }}
-
                             </option>
                         @endforeach
-
                     </select>
-
                     @error('kategori_id')
-                        <p class="text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
+                        <p class="text-rose-500 text-xs mt-1.5 font-medium">{{ $message }}</p>
                     @enderror
-
                 </div>
 
                 {{-- Publish --}}
                 <div>
-
-                    <label class="block mb-2 font-medium">
-                        Published At
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                        Tanggal Publikasi
                     </label>
-
                     <input type="date" name="published_at" value="{{ old('published_at') }}"
-                        class="w-full border rounded-lg px-4 py-3 @error('published_at') border-red-500 @enderror">
-
+                        class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1A40]/30 @error('published_at') border-rose-400 focus:ring-rose-200/30 @enderror">
                     @error('published_at')
-                        <p class="text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
+                        <p class="text-rose-500 text-xs mt-1.5 font-medium">{{ $message }}</p>
                     @enderror
-
                 </div>
 
                 {{-- Author --}}
                 <div>
-
-                    <label class="block mb-2 font-medium">
-                        Penulis
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                        Nama Penulis
                     </label>
-
                     <input type="text" name="author" value="{{ old('author', 'Admin') }}"
-                        class="w-full border rounded-lg px-4 py-3">
-
+                        class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1A40]/30">
                 </div>
 
                 {{-- Source --}}
                 <div>
-
-                    <label class="block mb-2 font-medium">
-                        Sumber
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                        Sumber Informasi
                     </label>
-
-                    <input type="text" name="source" placeholder="Bank Indonesia"
-                        value="{{ old('source', 'Bank Indonesia') }}" class="w-full border rounded-lg px-4 py-3">
-
+                    <input type="text" name="source" placeholder="Bank Indonesia" value="{{ old('source', 'Bank Indonesia') }}"
+                        class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1A40]/30">
                 </div>
 
-                {{-- Image --}}
+                {{-- Image File --}}
                 <div class="md:col-span-2">
-
-                    <label class="block mb-2 font-medium">
-                        Thumbnail
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                        Gambar Banner / Thumbnail
                     </label>
-
-                    <input type="file" name="image" class="w-full border rounded-lg px-4 py-3">
-
+                    <input type="file" name="image" accept="image/*"
+                        class="w-full text-xs text-slate-500 border border-slate-200 rounded-xl bg-white
+                        file:mr-4 file:border-0 file:bg-[#0B1A40] file:text-white file:px-4 file:py-2.5 file:rounded-l-xl file:font-semibold hover:file:bg-[#1E3A8A] file:cursor-pointer @error('image') border-rose-400 @enderror">
                     @error('image')
-                        <p class="text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
+                        <p class="text-rose-500 text-xs mt-1.5 font-medium">{{ $message }}</p>
                     @enderror
-
                 </div>
 
                 {{-- Excerpt --}}
                 <div class="md:col-span-2">
-
-                    <label class="block mb-2 font-medium">
-                        Ringkasan Berita
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                        Ringkasan Artikel (Excerpt)
                     </label>
-
-                    <textarea name="excerpt" rows="3" class="w-full border rounded-lg px-4 py-3">{{ old('excerpt') }}</textarea>
-
+                    <textarea name="excerpt" rows="2" placeholder="Tuliskan ringkasan singkat isi artikel (maksimal 200 karakter)..."
+                        class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1A40]/30 resize-none @error('excerpt') border-rose-400 focus:ring-rose-200/30 @enderror">{{ old('excerpt') }}</textarea>
                     @error('excerpt')
-                        <p class="text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
+                        <p class="text-rose-500 text-xs mt-1.5 font-medium">{{ $message }}</p>
                     @enderror
-
                 </div>
 
                 {{-- Content --}}
                 <div class="col-span-1 md:col-span-2">
-
-                    <label class="block mb-2 font-medium">
-                        Isi Berita
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                        Isi Konten Artikel Lengkap
                     </label>
-
-                    <div class="overflow-x-auto">
+                    <div class="overflow-hidden border border-slate-200 rounded-xl">
                         <textarea id="contentEditor" name="content" class="w-full">{{ old('content') }}</textarea>
                     </div>
-
                     @error('content')
-                        <p class="mt-1 text-sm text-red-500">
-                            {{ $message }}
-                        </p>
+                        <p class="mt-1.5 text-xs text-rose-500 font-medium">{{ $message }}</p>
                     @enderror
-
                 </div>
-
             </div>
 
-            <div class="mt-6 flex gap-3">
-
-                <a href="{{ route('berita.index') }}" class="px-5 py-3 bg-gray-200 rounded-lg">
-
+            <div class="mt-6 flex gap-3 border-t border-slate-100 pt-6">
+                <a href="{{ route('berita.index') }}" class="px-5 py-2.5 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-xl text-xs font-semibold transition">
                     Kembali
-
                 </a>
-
-                <button type="submit" class="px-6 py-3 bg-[#CF1A25] text-white rounded-lg">
-
-                    Simpan Berita
-
+                <button type="submit" class="px-5 py-2.5 bg-[#0B1A40] hover:bg-[#1E3A8A] text-white rounded-xl text-xs font-semibold transition cursor-pointer">
+                    Simpan Artikel
                 </button>
-
             </div>
-
         </form>
-
     </div>
 
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-
     <script>
         ClassicEditor
-            .create(document.querySelector('#contentEditor'))
+            .create(document.querySelector('#contentEditor'), {
+                toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ]
+            })
             .then(editor => {
-
-                const height = window.innerWidth < 768 ? '300px' : '500px';
-
+                const height = window.innerWidth < 768 ? '250px' : '400px';
                 editor.editing.view.change(writer => {
-                    writer.setStyle(
-                        'min-height',
-                        height,
-                        editor.editing.view.document.getRoot()
-                    );
+                    writer.setStyle('min-height', height, editor.editing.view.document.getRoot());
                 });
-
             })
             .catch(error => {
                 console.error(error);
             });
     </script>
-
 @endsection
