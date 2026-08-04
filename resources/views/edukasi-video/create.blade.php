@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Video Education')
-@section('page-title', 'Tambah Video Education')
+@section('title', 'Tambah Video Learning')
+@section('page-title', 'Tambah Video Learning')
 
 @section('content')
     <div class="max-w-4xl mx-auto space-y-6">
@@ -12,7 +12,7 @@
                     Tambah Video Edukasi Baru
                 </h3>
                 <p class="text-slate-500 text-xs mt-0.5">
-                    Anda dapat menambahkan hingga 3 video untuk ditampilkan di halaman depan Education.
+                    Anda dapat menambahkan hingga 3 video untuk ditampilkan di halaman depan Learning.
                 </p>
             </div>
 

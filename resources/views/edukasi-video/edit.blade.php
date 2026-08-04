@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Video Education')
-@section('page-title', 'Edit Video Education')
+@section('title', 'Edit Video Learning')
+@section('page-title', 'Edit Video Learning')
 
 @section('content')
     <div class="max-w-4xl mx-auto space-y-6">

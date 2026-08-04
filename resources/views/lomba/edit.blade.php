@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Engagement')
-@section('page-title', 'Edit Engagement')
+@section('title', 'Edit Moving')
+@section('page-title', 'Edit Moving')
 
 @section('content')
     <div class="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden max-w-4xl mx-auto">
         {{-- Form Header --}}
         <div class="bg-gradient-to-r from-[#0B1A40] to-[#1E3A8A] px-6 py-5 text-white">
-            <h3 class="text-base font-bold tracking-tight">Edit Program Engagement</h3>
+            <h3 class="text-base font-bold tracking-tight">Edit Program Moving</h3>
             <p class="text-slate-300 text-xs mt-0.5">Perbarui rincian program kerja, lomba, atau kegiatan yang dipublikasikan.</p>
         </div>
 

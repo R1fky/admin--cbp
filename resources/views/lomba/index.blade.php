@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Kelola Engagement')
-@section('page-title', 'Kelola Engagement')
+@section('title', 'Kelola Moving')
+@section('page-title', 'Kelola Moving')
 
 @section('content')
     {{-- Toast Success --}}
@@ -40,7 +40,7 @@
                         Program Kerja & Kompetisi
                     </h3>
                     <p class="text-slate-500 text-xs mt-0.5">
-                        Kelola seluruh data Engagement dan kompetisi Bank Indonesia.
+                        Kelola seluruh data Moving dan kompetisi Bank Indonesia.
                     </p>
                 </div>
                 <a href="{{ route('lomba.create') }}"
@@ -208,7 +208,7 @@
                         @empty
                             <tr>
                                 <td colspan="6" class="text-center py-12 text-slate-400 text-xs italic">
-                                    Belum ada data program kerja / engagement.
+                                    Belum ada data program kerja / moving.
                                 </td>
                             </tr>
                         @endforelse
@@ -229,7 +229,7 @@
             {{-- Header --}}
             <div class="sticky top-0 bg-slate-50 border-b border-slate-150 px-6 py-4 flex justify-between items-center z-10">
                 <h3 class="text-base font-bold text-slate-800 tracking-tight">
-                    Rincian Program Engagement
+                    Rincian Program Moving
                 </h3>
                 <button onclick="closeDetailModal()" class="text-2xl text-slate-400 hover:text-slate-600 cursor-pointer">
                     &times;

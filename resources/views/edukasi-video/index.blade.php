@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Video Education')
-@section('page-title', 'Kelola Video Education')
+@section('title', 'Video Learning')
+@section('page-title', 'Kelola Video Learning')
 
 @section('content')
     {{-- Toast Success --}}
@@ -67,7 +67,7 @@
                         Publikasi Video Edukasi
                     </h3>
                     <p class="text-slate-500 text-xs mt-0.5">
-                        Kelola tautan video YouTube interaktif. Maksimal hanya <b>3 video</b> yang ditampilkan pada beranda Education.
+                        Kelola tautan video YouTube interaktif. Maksimal hanya <b>3 video</b> yang ditampilkan pada beranda Learning.
                     </p>
                 </div>
 
@@ -169,7 +169,7 @@
                     </div>
                     <h3 class="font-bold text-sm text-slate-800">Belum Ada Video Edukasi</h3>
                     <p class="text-slate-400 text-xs mt-1 max-w-sm mx-auto leading-relaxed">
-                        Tambahkan tautan video YouTube edukatif baru untuk dipublikasikan pada halaman muka modul Education.
+                        Tambahkan tautan video YouTube edukatif baru untuk dipublikasikan pada halaman muka modul Learning.
                     </p>
                 </div>
             @endforelse

@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Entertainment')
-@section('page-title', 'Tambah Entertainment')
+@section('title', 'Tambah Sharing')
+@section('page-title', 'Tambah Sharing')
 
 @section('content')
     <div class="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden max-w-4xl mx-auto">
         {{-- Form Header --}}
         <div class="bg-gradient-to-r from-[#0B1A40] to-[#1E3A8A] px-6 py-5 text-white">
             <h3 class="text-base font-bold tracking-tight">Tulis Artikel & Berita Baru</h3>
-            <p class="text-slate-300 text-xs mt-0.5">Publikasikan konten berita, artikel edukatif, atau materi entertainment di portal CBP Rupiah.</p>
+            <p class="text-slate-300 text-xs mt-0.5">Publikasikan konten berita, artikel edukatif, atau materi sharing di portal CBP Rupiah.</p>
         </div>
 
         <form action="{{ route('berita.store') }}" method="POST" enctype="multipart/form-data" class="p-6 md:p-8 space-y-6">

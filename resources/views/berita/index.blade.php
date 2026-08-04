@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Kelola Entertainment')
-@section('page-title', 'Kelola Entertainment')
+@section('title', 'Kelola Sharing')
+@section('page-title', 'Kelola Sharing')
 
 @section('content')
     {{-- Toast Success --}}
@@ -37,10 +37,10 @@
             <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                 <div>
                     <h3 class="text-lg font-bold text-slate-800 tracking-tight">
-                        Artikel & Publikasi Entertainment
+                        Artikel & Publikasi Sharing
                     </h3>
                     <p class="text-slate-500 text-xs mt-0.5">
-                        Kelola seluruh data Entertainment, berita, publikasi, dan artikel Bank Indonesia.
+                        Kelola seluruh data Sharing, berita, publikasi, dan artikel Bank Indonesia.
                     </p>
                 </div>
                 <a href="{{ route('berita.create') }}"

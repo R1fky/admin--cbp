@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Education')
-@section('page-title', 'Kelola Education')
+@section('title', 'Learning')
+@section('page-title', 'Kelola Learning')
 
 @section('content')
     {{-- Toast Success --}}
