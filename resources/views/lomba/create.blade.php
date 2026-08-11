@@ -124,8 +124,9 @@
                     <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                         Deskripsi & Ketentuan Kegiatan
                     </label>
-                    <textarea name="description" rows="5" placeholder="Tuliskan detail pelaksanaan, hadiah, syarat pendaftaran, dan ketentuan lainnya..."
-                        class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1A40]/30 resize-none @error('description') border-rose-400 focus:ring-rose-200/30 @enderror">{{ old('description') }}</textarea>
+                    <div class="overflow-hidden border border-slate-200 rounded-xl @error('description') border-rose-400 @enderror">
+                        <textarea id="descriptionEditor" name="description" class="w-full">{{ old('description') }}</textarea>
+                    </div>
                     @error('description')
                         <p class="text-rose-500 text-xs mt-1.5 font-medium">{{ $message }}</p>
                     @enderror
@@ -142,4 +143,21 @@
             </div>
         </form>
     </div>
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#descriptionEditor'), {
+                toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ]
+            })
+            .then(editor => {
+                const height = window.innerWidth < 768 ? '250px' : '400px';
+                editor.editing.view.change(writer => {
+                    writer.setStyle('min-height', height, editor.editing.view.document.getRoot());
+                });
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 @endsection

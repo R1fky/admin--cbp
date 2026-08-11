@@ -326,7 +326,7 @@
             document.getElementById('detail_kategori').innerText = kategori ?? '-';
             document.getElementById('max_participants').innerText =
                 maxParticipants ? `Kuota: ${maxParticipants} Orang` : 'Kuota: Tidak dibatasi';
-            document.getElementById('detail_description').innerText = description ?? '-';
+            document.getElementById('detail_description').innerHTML = description ?? '-';
             document.getElementById('detail_location_type').innerText = locationType ?? '-';
             document.getElementById('detail_location').innerText = location ?? '-';
             document.getElementById('detail_release').innerText = releaseDate ?? '-';
