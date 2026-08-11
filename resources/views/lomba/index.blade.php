@@ -276,7 +276,7 @@
                 {{-- Deskripsi --}}
                 <div class="border-t border-slate-100 pt-5">
                     <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Deskripsi Kegiatan</h4>
-                    <div id="detail_description" class="border border-slate-200/60 rounded-xl p-4 text-xs leading-relaxed text-slate-600 bg-slate-50/50 whitespace-pre-line"></div>
+                    <div id="detail_description" class="border border-slate-200/60 rounded-xl p-4 text-xs leading-relaxed text-slate-600 bg-slate-50/50 detail-ck-content"></div>
                 </div>
             </div>
         </div>

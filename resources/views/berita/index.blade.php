@@ -255,7 +255,7 @@
                 <!-- Isi Berita -->
                 <div class="border-t border-slate-100 pt-5">
                     <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Konten Lengkap</h4>
-                    <div id="detail_content" class="text-xs text-slate-600 leading-relaxed whitespace-pre-wrap bg-slate-50/50 p-4 border border-slate-200/60 rounded-xl"></div>
+                    <div id="detail_content" class="text-xs text-slate-600 leading-relaxed bg-slate-50/50 p-4 border border-slate-200/60 rounded-xl detail-ck-content"></div>
                 </div>
             </div>
         </div>

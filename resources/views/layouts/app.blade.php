@@ -16,6 +16,56 @@
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
+
+        /* CKEditor & Rendered HTML Content Reset Styles */
+        .ck-content ul, 
+        .detail-ck-content ul {
+            list-style-type: disc !important;
+            padding-inline-start: 1.5rem !important;
+            margin-top: 0.75rem !important;
+            margin-bottom: 0.75rem !important;
+        }
+
+        .ck-content ol,
+        .detail-ck-content ol {
+            list-style-type: decimal !important;
+            padding-inline-start: 1.5rem !important;
+            margin-top: 0.75rem !important;
+            margin-bottom: 0.75rem !important;
+        }
+
+        .ck-content li,
+        .detail-ck-content li {
+            list-style-position: outside !important;
+            margin-top: 0.25rem !important;
+            margin-bottom: 0.25rem !important;
+        }
+
+        .ck-content h2, .detail-ck-content h2 {
+            font-size: 1.5rem !important;
+            font-weight: bold !important;
+            margin-top: 1.5rem !important;
+            margin-bottom: 0.75rem !important;
+        }
+
+        .ck-content h3, .detail-ck-content h3 {
+            font-size: 1.25rem !important;
+            font-weight: bold !important;
+            margin-top: 1.25rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+
+        .ck-content h4, .detail-ck-content h4 {
+            font-size: 1rem !important;
+            font-weight: bold !important;
+            margin-top: 1rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+
+        .ck-content a, .detail-ck-content a {
+            color: #1E3A8A !important;
+            text-decoration: underline !important;
+        }
     </style>
 </head>
 
